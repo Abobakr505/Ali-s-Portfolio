@@ -24,7 +24,7 @@ const Contact = () => {
   }, []);
 
   return (
-    <section className="w-full min-h-screen bg-black text-white flex flex-col items-center py-20 px-4">
+    <section className="w-full min-h-screen bg-black text-white flex flex-col items-center py-28 px-4">
       <div className="text-center mb-16">
         <h1 className="text-6xl md:text-7xl font-extrabold tracking-tight">Contact</h1>
         <div className="mx-auto w-32 h-1 bg-white rounded-full mt-4 shadow-lg"></div>

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import Logo from '../../public/assets/images/logo.png'
 
 interface Company {
   name: string;
@@ -132,7 +133,7 @@ const Folder: React.FC<FolderProps> = ({ color = '#4f46e5', size = 1, items = []
               </div>
             );
           })}
-
+            
           {/* الغطاء الأمامي */}
           <div
             className={`absolute z-30 w-full h-full origin-bottom transition-all duration-300 ease-in-out ${
@@ -153,7 +154,7 @@ const Folder: React.FC<FolderProps> = ({ color = '#4f46e5', size = 1, items = []
               borderRadius: '5px 10px 10px 10px',
               ...(open && { transform: 'skew(-15deg) scaleY(0.6)' })
             }}
-          ></div>
+          ><div className='flex justify-center items-center'><img src={Logo} alt="Logo" className='h-20 w-20' /></div> </div>
         </div>
       </div>
     </div>
