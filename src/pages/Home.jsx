@@ -6,7 +6,7 @@ import Statistics from '../sections/Statistics'
 import Services from '../sections/Services'
 import Work from '../sections/Work'
 import Companies from '../sections/Companies'
-import TimelineSection from '../sections/timeline'
+import TimelineSection from '../sections/Timeline'
 import Marquee from '../sections/Marquee'
 import CTA from '../components/CTA'
 
