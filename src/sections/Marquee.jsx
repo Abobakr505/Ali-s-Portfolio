@@ -1,5 +1,5 @@
 import React from 'react'
-import star from '../assets/images/star.svg'
+import star from '../../public/assets/images/star.svg'
 
 const Marquee = () => {
   return (

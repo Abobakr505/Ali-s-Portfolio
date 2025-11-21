@@ -1,5 +1,5 @@
 import React from 'react'
-import Logo from '../assets/images/logo.svg'
+import Logo from '../../public/assets/images/logo.png'
 import { Link } from 'react-router-dom'
 
 const Footer = () => {
@@ -11,7 +11,7 @@ const Footer = () => {
       {/* Footer Top */}
       <footer className="main-container grid md:grid-cols-2 lg:grid-cols-4 gap-10 py-20">
         <Link to='/'>
-          <img src={Logo} alt="Logo" className='h-10 w-auto' />
+          <img src={Logo} alt="Logo" className='h-20 w-20' />
         </Link>
         <div>
           <h5 className='font-medium mb-5'>Services</h5>

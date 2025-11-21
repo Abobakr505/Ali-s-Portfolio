@@ -5,7 +5,7 @@ import { useGSAP } from '@gsap/react';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { SplitText } from "gsap/SplitText";
 import TiltedCard from '../components/TiltedCard';
-import heroImage from '../assets/images/home.png';
+import heroImage from '../../public/assets/images/home.png';
 gsap.registerPlugin(useGSAP,ScrollTrigger,SplitText);
 
 const Hero = () => {
