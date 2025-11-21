@@ -18,7 +18,10 @@
     #2FF7ED 100%
   );
 }
-
+html{
+  scroll-behavior: smooth;
+  overflow-x: hidden;
+}
 @layer base {
 
   body {
@@ -149,3 +152,4 @@
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
+

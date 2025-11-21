@@ -92,30 +92,30 @@ const Hero = () => {
         {/* Text container */}
         <div className="main-container h-screen flex flex-col lg:justify-center items-start lg:py-12 max-lg:pt-40">
           <h1 className="text-3xl lg:text-[3.2vw] uppercase font-heading font-semibold">Ali Hasan</h1>
-          <h2 className="text-6xl lg:text-[7vw] font-heading font-bold leading-[1] tracking-tight mt-3 mb-6">Architect &  <br/>  <span className='text-stroke'> CGI Artist </span></h2>
+          <h2 className="text-5xl lg:text-[7vw] font-heading font-bold leading-[1] tracking-tight mt-3 mb-6">Architect &  <br/>  <span className='text-stroke'> CGI Artist </span></h2>
           <GradientButton text="Let's Talk" link="mailto:john@gmail.com" className="gradient-btn" />
         </div>
-        <div className="mr-0 md:mr-16  mb-12 ">
+        <div className="mr-0 md:mr-16  mb-12 mt-8 md:mt-0">
         <TiltedCard
-          imageSrc={heroImage}
-          altText="Ali Hasan - CGI Artist"
-          captionText="Ali Hasan - CGI Artist"
-          containerHeight="370px"
-          containerWidth="370px"
-          imageHeight="370px"
-          imageWidth="370px"
-          rotateAmplitude={12}
-          scaleOnHover={1.2}
-          showMobileWarning={false}
-          showTooltip={true}
-          displayOverlayContent={true}
-          overlayContent={
-            <p className="glass-effect p-2 rounded text-sm  text-gradient">
-              Ali Hasan - CGI Artist
-            </p>
-          }
-          
-        />
+  imageSrc={heroImage}
+  altText="Ali Hasan - CGI Artist"
+  captionText="Ali Hasan - CGI Artist"
+
+
+  /* Larger on tablets */
+  className="sm:!h-[280px] sm:!w-[280px] md:!h-[330px] md:!w-[330px] lg:!h-[370px] lg:!w-[370px] "
+
+  rotateAmplitude={10}
+  scaleOnHover={1.1}
+  showMobileWarning={false}
+  showTooltip={true}
+  displayOverlayContent={true}
+  overlayContent={
+    <p className="glass-effect p-2 rounded text-sm text-gradient">
+      Ali Hasan - CGI Artist
+    </p>
+  }
+/>
         </div>
         </div>
         {/* shape */}
