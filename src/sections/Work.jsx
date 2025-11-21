@@ -65,25 +65,24 @@ const handleAnimationComplete = () => {
         <div ref={projectsRef}>
           {/* Projects */}
           <div className='flex gap-4 lg:gap-8 ms-4 lg:ms-[40%] mt-6'>
-            {projects.map(({ id, name, image, link }) => (
-              <a
-                key={id}
-                href={link}
-                className="relative rounded-2xl w-full min-w-[340px] lg:min-w-xl h-72 lg:h-96 block overflow-hidden group"
-              >
-                {/* Project Image */}
-                <img
-                  src={image}
-                  alt={name}
-                  className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                />
+{projects.map(({ id, name, mainImage, link }) => (
+  <a
+    key={id}
+    href={link}
+    className="relative rounded-2xl w-full min-w-[340px] lg:min-w-xl h-72 lg:h-96 block overflow-hidden group"
+  >
+    <img
+      src={mainImage}
+      alt={name}
+      className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+    />
 
-                {/* Project Name */}
-                <span className="absolute top-4 right-4 bg-black text-white text-sm lg:text-lg uppercase leading-[1.4] font-heading px-5 py-1 rounded-full">
-                  {name}
-                </span>
-              </a>
-            ))}
+    <span className="absolute top-4 right-4 bg-black text-white text-sm lg:text-lg uppercase leading-[1.4] font-heading px-5 py-1 rounded-full">
+      {name}
+    </span>
+  </a>
+))}
+
           </div>
         </div>
 

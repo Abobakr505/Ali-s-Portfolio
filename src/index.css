@@ -142,14 +142,23 @@ html{
 }
 
 .glass-effect {
-  background: rgba(255, 255, 255, 0.267);
+  background: rgba(255, 255, 255, 0.445);
   backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.288);
+  border: 1px solid rgba(255, 255, 255, 0.411);
 }
 
 .text-gradient {
   background: var(--color-gradient);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+}
+
+/* في ملف CSS global */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
 }
 
