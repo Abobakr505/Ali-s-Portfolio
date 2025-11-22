@@ -55,17 +55,14 @@ const Services = () => {
             <div className='flex gap-6 lg:gap-8'>
               <span className="text-gray-400 text-lg lg:text-2xl font-heading tracking-wide block mb-4">01</span>
               <h2 className="text-[8vw] md:text-6xl font-heading font-bold leading-[1]">
-                  Web Design <br /> & UI/UX
+                 3D Modeling
               </h2>
             </div>
 
             {/* Right side */}
             <div className="flex items-center">
               <p className="text-lg lg:text-xl leading-relaxed">
-                  Crafting modern, user-focused websites with clean layouts,
-                  thoughtful typography, and smooth interactions. Every design
-                  is tailored to deliver both aesthetic appeal and seamless
-                  usability.
+                  Professional 3D modeling for products, characters, and architecture with clean topology and high accuracy.
               </p>
             </div>
 
@@ -78,14 +75,14 @@ const Services = () => {
             <div className='flex gap-6 lg:gap-8'>
               <span className="text-gray-400 text-lg lg:text-2xl font-heading tracking-wide block mb-4">02</span>
               <h2 className="text-[8vw] md:text-6xl font-heading font-bold leading-[1]">
-                  Shopify <br /> Development
+                  Photorealistic Rendering
               </h2>
             </div>
 
             {/* Right side */}
             <div className="flex items-center">
               <p className="text-lg lg:text-xl leading-relaxed">
-                  From custom themes to advanced features, I design and build Shopify stores that boost sales and reflect your brand. Optimized for performance, easy management, and smooth shopping experiences.
+                  High-quality realistic rendering with optimized lighting, materials, and composition for stunning visuals.
               </p>
             </div>
 
@@ -98,14 +95,14 @@ const Services = () => {
             <div className='flex gap-6 lg:gap-8'>
               <span className="text-gray-400 text-lg lg:text-2xl font-heading tracking-wide block mb-4">03</span>
               <h2 className="text-[8vw] md:text-6xl font-heading font-bold leading-[1]">
-                  Creative <br /> Branding
+                 3D Animation
               </h2>
             </div>
 
             {/* Right side */}
             <div className="flex items-center">
               <p className="text-lg lg:text-xl leading-relaxed">
-                  Building strong brand identities through design, storytelling, and visuals that connect with your audience. From logos to full brand systems, I help create a consistent and memorable presence.
+                  Smooth and engaging 3D animations for products, characters, and technical demonstrations.
               </p>
             </div>
 
