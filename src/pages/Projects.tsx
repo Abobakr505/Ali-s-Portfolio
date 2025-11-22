@@ -40,7 +40,7 @@ const Projects = () => {
           </h2>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-12">
-{projects.map(({ id, name, mainImage, link }) => (
+{projects.map(({ id, name, mainImage }) => (
 <Link
       key={id}
       to={`/project/${id}`}

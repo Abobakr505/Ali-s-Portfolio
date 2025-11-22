@@ -9,6 +9,7 @@ import Companies from '../sections/Companies'
 import TimelineSection from '../sections/Timeline'
 import Marquee from '../sections/Marquee'
 import CTA from '../components/CTA'
+import Testimonials from '../sections/Testimonials'
 
 const Home = () => {
   return (
@@ -21,6 +22,7 @@ const Home = () => {
       <Work />
       <Companies />
       <TimelineSection />
+      <Testimonials/>
       <Marquee />
       <CTA />
     </>

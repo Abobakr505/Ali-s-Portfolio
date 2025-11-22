@@ -89,6 +89,7 @@ const Hero = () => {
     <>
       <div ref={heroRef} className='relative overflow-hidden z-0'>
       <div className=' h-screen flex flex-col md:flex-row justify-center items-center '>
+        
         {/* Text container */}
         <div className="main-container h-screen flex flex-col lg:justify-center items-start lg:py-12 max-lg:pt-40">
           <h1 className="text-3xl lg:text-[3.2vw] uppercase font-heading font-semibold">Ali Hasan</h1>
@@ -101,17 +102,13 @@ const Hero = () => {
   altText="Ali Hasan - CGI Artist"
   captionText="Ali Hasan - CGI Artist"
 
-
-  /* Larger on tablets */
-  className="sm:!h-[280px] sm:!w-[280px] md:!h-[330px] md:!w-[330px] lg:!h-[370px] lg:!w-[370px] "
-
   rotateAmplitude={10}
   scaleOnHover={1.1}
   showMobileWarning={false}
   showTooltip={true}
   displayOverlayContent={true}
   overlayContent={
-    <p className="glass-effect p-2 rounded text-sm text-gradient">
+    <p className=" p-2 rounded text-sm text-gradient">
       Ali Hasan - CGI Artist
     </p>
   }

@@ -5,6 +5,7 @@ import { gsap } from "gsap";
 import { useGSAP } from '@gsap/react';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import SplitText from "../components/SplitText";
+import { Link } from 'react-router-dom';
 
 
 gsap.registerPlugin(useGSAP,ScrollTrigger);
@@ -66,9 +67,9 @@ const handleAnimationComplete = () => {
           {/* Projects */}
           <div className='flex gap-4 lg:gap-8 ms-4 lg:ms-[40%] mt-6'>
 {projects.map(({ id, name, mainImage, link }) => (
-  <a
-    key={id}
-    href={link}
+  <Link
+      key={id}
+      to={`/project/${id}`}
     className="relative rounded-2xl w-full min-w-[340px] lg:min-w-xl h-72 lg:h-96 block overflow-hidden group"
   >
     <img
@@ -80,7 +81,7 @@ const handleAnimationComplete = () => {
     <span className="absolute top-4 right-4 bg-black text-white text-sm lg:text-lg uppercase leading-[1.4] font-heading px-5 py-1 rounded-full">
       {name}
     </span>
-  </a>
+  </Link>
 ))}
 
           </div>

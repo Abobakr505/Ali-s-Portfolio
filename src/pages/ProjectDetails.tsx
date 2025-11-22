@@ -19,6 +19,7 @@ const ProjectDetails = () => {
   const thumbnailsRef = useRef<HTMLDivElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
   const descriptionRef = useRef<HTMLParagraphElement>(null);
+  const videoRef = useRef<HTMLDivElement>(null);
 
   const [mainImage, setMainImage] = useState(project?.mainImage);
   const [imageLoaded, setImageLoaded] = useState(false);
@@ -96,6 +97,27 @@ const ProjectDetails = () => {
           duration: 0.8,
           ease: "back.out(1.7)",
           delay: 0.8
+        }
+      );
+    }
+
+    // Video section animation
+    if (videoRef.current && project.video) {
+      gsap.fromTo(videoRef.current, 
+        {
+          opacity: 0,
+          y: 80
+        },
+        {
+          scrollTrigger: {
+            trigger: videoRef.current,
+            start: "top 85%",
+            toggleActions: "play none none reverse"
+          },
+          opacity: 1,
+          y: 0,
+          duration: 1,
+          ease: "power3.out"
         }
       );
     }
@@ -216,8 +238,6 @@ const ProjectDetails = () => {
     });
   };
 
-
-
   if (!project) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-black to-purple-900 text-white relative overflow-hidden">
@@ -240,8 +260,6 @@ const ProjectDetails = () => {
       {/* Animated Background Particles */}
       <div className="particles-container absolute inset-0"></div>
       
-
-
       <div className="relative z-10 px-4 py-28 max-w-6xl mx-auto">
         {/* Project Name */}
         <h2 ref={titleRef} className="text-6xl md:text-7xl font-bold mb-8 bg-gradient-to-r from-white to-purple-200 bg-clip-text text-transparent">
@@ -286,6 +304,30 @@ const ProjectDetails = () => {
           {project.description}
         </p>
 
+        {/* Video Section (if project has video) */}
+        {project.video && (
+          <section ref={videoRef} className="mb-16">
+            <h2 className="text-4xl font-bold mb-8 bg-gradient-to-r from-white to-purple-200 bg-clip-text text-transparent">
+              Project Video
+            </h2>
+            <div className="rounded-2xl overflow-hidden shadow-2xl border border-purple-500/20">
+              <div className="relative w-full h-0 pb-[56.25%]"> {/* 16:9 aspect ratio */}
+                <iframe
+                  src={project.video}
+                  className="absolute top-0 left-0 w-full h-full"
+                  frameBorder="0"
+                  allow="autoplay; fullscreen; picture-in-picture"
+                  allowFullScreen
+                  title={`${project.name} video`}
+                ></iframe>
+              </div>
+              <div className="p-4 bg-gradient-to-r from-purple-900/50 to-pink-900/50 backdrop-blur-sm">
+                <p className="text-center text-gray-300">Watch the project demonstration video</p>
+              </div>
+            </div>
+          </section>
+        )}
+
         {/* Features */}
         <section className="mb-16">
           <h2 className="text-4xl font-bold mb-8 bg-gradient-to-r from-white to-purple-200 bg-clip-text text-transparent">
@@ -323,31 +365,18 @@ const ProjectDetails = () => {
           </div>
         </section>
 
-        {/* Live Demo & GitHub Links */}
+        {/* Live Demo & behance Links */}
         <div ref={buttonsRef} className="flex flex-wrap gap-6 mb-16">
-          {project.liveDemo && (
-            <a
-              href={project.liveDemo}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group relative px-8 py-4 bg-gradient-to-r from-white to-gray-300 text-black font-bold rounded-xl hover:scale-105 transition-all duration-300 overflow-hidden"
-            >
-              <span className="relative z-10 flex items-center gap-2">
-                🌐 Live Demo
-              </span>
-              <div className="absolute inset-0 bg-gradient-to-r from-gray-300 to-white opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-            </a>
-          )}
           
-          {project.github && (
+          {project.behance && (
             <a
-              href={project.github}
+              href={project.behance}
               target="_blank"
               rel="noopener noreferrer"
               className="group relative px-8 py-4 bg-gradient-to-r from-purple-600 to-pink-600 font-bold rounded-xl hover:scale-105 transition-all duration-300 overflow-hidden"
             >
               <span className="relative z-10 flex items-center gap-2">
-                💻 GitHub
+                View in Behance 🌄
               </span>
               <div className="absolute inset-0 bg-gradient-to-r from-pink-600 to-purple-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
             </a>
