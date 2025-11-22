@@ -1,14 +1,12 @@
 import React, { useRef, useEffect, useState } from "react";
 import { gsap } from "gsap";
-import Img1 from '../../public/assets/images/compny-1.jpg';
-import Img2 from '../../public/assets/images/compny-2.jpg';
+import Img1 from '../../public/assets/images/compny-1.webp';
+import Img2 from '../../public/assets/images/compny-2.webp';
 import Folder from '../components/Folder';
 
 const companies = [
   { id: 1, name: "LODESTAR", logo: Img1 },
   { id: 2, name: "OBAK", logo: Img2 },
-  { id: 3, name: "LODESTAR", logo: Img1 },
-
 ];
 
 const Companies = () => {

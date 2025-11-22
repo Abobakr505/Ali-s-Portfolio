@@ -43,7 +43,7 @@ const handleAnimationComplete = () => {
       <div ref={workRef} className="min-h-screen bg-white text-black py-24 lg:py-40 overflow-hidden">
         
         {/* Title Wrapper */}
-        <div className='main-container pb-8 lg:pb-12 flex max-md:flex-col gap-6 justify-between items-start md:items-end'>
+        <div className='main-container pb-8 lg:pb-12 flex max-md:flex-col gap-6 justify-between items-center'>
           <div className='max-w-xl'>
             <SplitText
               text="Featured Projects"
@@ -61,7 +61,12 @@ const handleAnimationComplete = () => {
             />
             <p className='text-lg lg:text-xl'>A showcase of my selected projects—designed to inspire, engage, and deliver real results.</p>
           </div>
-          <GradientButton text="Explore All" link="/projects" className="btn-light" />
+                            <Link
+          to="/projects"
+          className="text-white  bg-black hover:bg-white  hover:text-black px-8 py-3 rounded-full transition-all duration-300 border-black border-2 "
+        >
+        Explore All
+        </Link>
         </div>
         <div ref={projectsRef}>
           {/* Projects */}

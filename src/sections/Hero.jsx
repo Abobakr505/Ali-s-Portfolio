@@ -1,11 +1,13 @@
 import React, { useRef } from 'react'
-import GradientButton from '../components/GradientButton'
 import { gsap } from "gsap";
 import { useGSAP } from '@gsap/react';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { SplitText } from "gsap/SplitText";
 import TiltedCard from '../components/TiltedCard';
-import heroImage from '../../public/assets/images/home.png';
+import heroImage from '../../public/assets/images/home.webp';
+import { Link } from 'react-router-dom';
+import StarBorder from '../components/StarBorder';
+
 gsap.registerPlugin(useGSAP,ScrollTrigger,SplitText);
 
 const Hero = () => {
@@ -94,7 +96,16 @@ const Hero = () => {
         <div className="main-container h-screen flex flex-col lg:justify-center items-start lg:py-12 max-lg:pt-40">
           <h1 className="text-3xl lg:text-[3.2vw] uppercase font-heading font-semibold">Ali Hasan</h1>
           <h2 className="text-5xl lg:text-[7vw] font-heading font-bold leading-[1] tracking-tight mt-3 mb-6">Architect &  <br/>  <span className='text-stroke'> CGI Artist </span></h2>
-          <GradientButton text="Let's Talk" link="mailto:john@gmail.com" className="gradient-btn" />
+          <Link to="/contact">
+          <StarBorder
+            as="button"
+            className="custom-class gradient-btn text-lg lg:text-xl font-semibold rounded-full"
+            color="purple"
+            speed="1s"
+          >
+            Let's Talk
+          </StarBorder>
+          </Link>
         </div>
         <div className="mr-0 md:mr-16  mb-12 mt-8 md:mt-0">
         <TiltedCard

@@ -5,9 +5,9 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { SplitText } from "gsap/SplitText";
 import BlurText from "../components/Blurtext";
 import Stack from '../components/Stack';
-import Img1 from '../../public/assets/images/home.png';
-import Img2 from '../../public/assets/images/card-2.jpg';
-import Img3 from '../../public/assets/images/card-3.jfif';
+import Img1 from '../../public/assets/images/home.webp';
+import Img2 from '../../public/assets/images/card-2.webp';
+import Img3 from '../../public/assets/images/card-3.webp';
 gsap.registerPlugin(useGSAP, ScrollTrigger, SplitText);
 
 const About = () => {

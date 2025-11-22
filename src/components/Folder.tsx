@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Logo from '../../public/assets/images/logo.png'
+import Logo from '../../public/assets/images/logo.webp'
 
 interface Company {
   name: string;
@@ -32,7 +32,7 @@ const darkenColor = (hex: string, percent: number): string => {
 };
 
 const Folder: React.FC<FolderProps> = ({ color = '#4f46e5', size = 1, items = [], className = '' }) => {
-  const maxItems = 3;
+  const maxItems = 2;
   const papers = items.slice(0, maxItems);
   while (papers.length < maxItems) {
     papers.push(null);
@@ -80,7 +80,6 @@ const Folder: React.FC<FolderProps> = ({ color = '#4f46e5', size = 1, items = []
   const getOpenTransform = (index: number) => {
     if (index === 0) return 'translate(-120%, -70%) rotate(-15deg)';
     if (index === 1) return 'translate(10%, -70%) rotate(15deg)';
-    if (index === 2) return 'translate(-50%, -100%) rotate(5deg)';
     return '';
   };
 
