@@ -2,8 +2,10 @@ import { useLocation } from "react-router-dom";
 import { useEffect } from "react";
 import { Ghost } from "lucide-react";
 import FuzzyText from '../components/FuzzyText'
+import useDocumentTitle from "../hooks/useDocumentTitle";
 
 const NotFound = () => {
+  useDocumentTitle("Ali's Portfolio - NotFound 404 ");
   const location = useLocation();
 
   useEffect(() => {

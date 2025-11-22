@@ -5,10 +5,12 @@ import GradientButton from "../components/GradientButton";
 import { FiMail, FiPhone, FiMapPin, FiInstagram, FiLinkedin, FiGithub , FiFacebook } from "react-icons/fi";
 import emailjs from "emailjs-com";
 import Swal from "sweetalert2";
+import useDocumentTitle from "../hooks/useDocumentTitle";
 
 gsap.registerPlugin(ScrollTrigger);
 
 const Contact = () => {
+  useDocumentTitle("Ali's Portfolio - Contact ");
   const formRef = useRef<HTMLFormElement>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 

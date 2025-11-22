@@ -4,10 +4,12 @@ import projects from "../components/projectsData";
 import CTA from "../components/CTA";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
+import useDocumentTitle from "../hooks/useDocumentTitle";
 
 gsap.registerPlugin(ScrollTrigger);
 
 const Projects = () => {
+  useDocumentTitle("Ali's Portfolio - Projects ");
   const projectsRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {

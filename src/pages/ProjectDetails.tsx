@@ -4,6 +4,7 @@ import projects from "../components/projectsData";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { MotionPathPlugin } from "gsap/MotionPathPlugin";
+import useDocumentTitle from "../hooks/useDocumentTitle";
 
 gsap.registerPlugin(ScrollTrigger, MotionPathPlugin);
 
@@ -11,6 +12,7 @@ const ProjectDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const project = projects.find(p => p.id === Number(id));
+  useDocumentTitle(`Ali's Portfolio - ${project?.name || "Project"}`);
 
   const mainRef = useRef<HTMLDivElement>(null);
   const featuresRef = useRef<HTMLUListElement>(null);
