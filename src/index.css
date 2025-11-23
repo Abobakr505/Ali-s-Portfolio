@@ -162,72 +162,70 @@ html{
   display: none;
 }
 
-.star-border-container {
-  display: inline-block;
+/* CSS */
+.button-85 {
+  padding:0.4em 3em;
+  border: none;
+  outline: none;
+  color: rgb(255, 255, 255);
+  background: #111;
+  cursor: pointer;
   position: relative;
-  border-radius: 20px;
-  overflow: hidden;
-}
-
-.border-gradient-bottom {
-  position: absolute;
-  width: 300%;
-  height: 50%;
-  opacity: 0.8;
-  bottom: -12px;
-  right: -250%;
-  border-radius: 50%;
-  animation: star-movement-bottom linear infinite alternate;
   z-index: 0;
+  border-radius: 40px;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
 }
 
-.border-gradient-top {
+.button-85:before {
+  content: "";
+  background: linear-gradient(
+    45deg,
+    #ff0000,
+    #7B2FF7,
+    #FF4D6D,
+    #BD3EB2,
+    #00ffd5,
+    #002bff,
+    #7a00ff,
+    #ff00c8,
+    #ff0000
+  );
   position: absolute;
-  opacity: 0.8;
-  width: 300%;
-  height: 50%;
-  top: -12px;
-  left: -250%;
-  border-radius: 50%;
-  animation: star-movement-top linear infinite alternate;
-  z-index: 0;
+  top: -2px;
+  left: -2px;
+  background-size: 400%;
+  z-index: -1;
+  filter: blur(5px);
+  -webkit-filter: blur(5px);
+  width: calc(100% + 4px);
+  height: calc(100% + 4px);
+  animation: glowing-button-85 20s linear infinite;
+  transition: opacity 0.3s ease-in-out;
+  border-radius: 40px;
 }
 
-.inner-content {
-  position: relative;
-  border: 1px solid #333;
-  background:#222;
-  color: white;
-  font-size: 16px;
-  text-align: center;
-  padding: 12px 50px;
-  border-radius: 30px;
-  z-index: 1;
-  transition: background 0.3s ease;
-}
-.inner-content:hover {
-  background: #333;
-
-}
-
-@keyframes star-movement-bottom {
+@keyframes glowing-button-85 {
   0% {
-    transform: translate(0%, 0%);
-    opacity: 1;
+    background-position: 0 0;
+  }
+  50% {
+    background-position: 400% 0;
   }
   100% {
-    transform: translate(-100%, 0%);
-    opacity: 0;
+    background-position: 0 0;
   }
 }
 
-@keyframes star-movement-top {
-  0% {
-    transform: translate(0%, 0%);
-    opacity: 1;
-  }
-  100% {
-    transform: translate(100%, 0%);
-    opacity: 0;
-  }
+.button-85:after {
+  z-index: -1;
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: #222;
+  left: 0;
+  top: 0;
+  border-radius: 40px;
 }

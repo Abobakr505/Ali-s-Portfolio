@@ -96,18 +96,13 @@ const Hero = () => {
         <div className="main-container h-screen flex flex-col lg:justify-center items-start lg:py-12 max-lg:pt-40">
           <h1 className="text-3xl lg:text-[3.2vw] uppercase font-heading font-semibold">Ali Hasan</h1>
           <h2 className="text-5xl lg:text-[7vw] font-heading font-bold leading-[1] tracking-tight mt-3 mb-6">Architect &  <br/>  <span className='text-stroke'> CGI Artist </span></h2>
-          <Link to="/contact">
-          <StarBorder
-            as="button"
-            className="custom-class gradient-btn text-lg lg:text-xl font-semibold rounded-full"
-            color="purple"
-            speed="1s"
-          >
+          <Link to="/contact" className="button-85 gradient-btn text-lg lg:text-xl font-semibold ">
+
             Let's Talk
-          </StarBorder>
+
           </Link>
         </div>
-        <div className="mr-0 md:mr-16  mb-12 mt-8 md:mt-0">
+        <div className="mr-0 md:mr-20  mb-12 mt-8 md:mt-0">
         <TiltedCard
   imageSrc={heroImage}
   altText="Ali Hasan - CGI Artist"

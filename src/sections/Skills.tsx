@@ -88,10 +88,10 @@ const Skills = () => {
           <div key={idx} className="flex flex-col items-center">
             {/* Circle */}
             <div
-              className="relative w-32 h-32 skill-circle"
+              className="relative w-32 h-32 skill-circle "
               data-progress={value}
             >
-              <svg className="w-full h-full">
+              <svg className="w-full h-full rounded-full">
                 <circle
                   cx="64"
                   cy="64"
@@ -111,7 +111,7 @@ const Skills = () => {
                   strokeDasharray="380"
                   strokeDashoffset="380"
                   strokeLinecap="round"
-                  style={{ filter: "drop-shadow(0 0 8px #fff)" }}
+                  style={{ filter: "drop-shadow(0 0 8px #fff)"  }}
                 />
               </svg>
 
