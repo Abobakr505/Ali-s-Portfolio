@@ -126,7 +126,7 @@ const Folder: React.FC<FolderProps> = ({ color = '#4f46e5', size = 1, items = []
                 {item && (
                   <>
                     <img src={item.logo} alt={item.name} className="w-[40px] h-[40px] rounded-sm object-cover  " />
-                    <span className="text-sm  text-center">{item.name}</span>
+                    <span className="text-sm  text-center font-bold">{item.name}</span>
                   </>
                 )}
               </div>

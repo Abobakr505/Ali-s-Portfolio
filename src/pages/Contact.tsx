@@ -1,7 +1,6 @@
 import React, { useRef, useEffect, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
-import GradientButton from "../components/GradientButton";
 import { FiMail, FiPhone, FiMapPin, FiInstagram, FiLinkedin, FiGithub , FiFacebook } from "react-icons/fi";
 import emailjs from "emailjs-com";
 import Swal from "sweetalert2";
@@ -90,7 +89,7 @@ if (result.status === 200) {
         <div className="flex flex-col justify-center space-y-6">
           <div className="flex items-center space-x-4">
             <FiMail className="w-6 h-6 text-white" />
-            <span>hello@yourdomain.com</span>
+            <span>alihasan5335@gmail.com</span>
           </div>
           <div className="flex items-center space-x-4">
             <FiPhone className="w-6 h-6 text-white" />

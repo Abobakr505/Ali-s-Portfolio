@@ -8,6 +8,10 @@ import {
   FiCheckCircle,
   FiPocket,
 } from "react-icons/fi";
+import { LuGraduationCap } from "react-icons/lu";
+import { FaUserTie } from "react-icons/fa";
+import { BriefcaseBusiness } from 'lucide-react';
+import { SiFreelancer } from "react-icons/si";
 import SplitText from "../components/SplitText";
 
 const handleAnimationComplete = () => {
@@ -16,13 +20,13 @@ const handleAnimationComplete = () => {
 
 gsap.registerPlugin(ScrollTrigger);
 
-const timelineData = [
-  { step: "Idea Generation", desc: "Brainstorm and collect ideas.", icon: FiTool },
-  { step: "Planning", desc: "Define roadmap and milestones.", icon: FiTool },
-  { step: "Design", desc: "Create mockups and visual designs.", icon: FiPenTool },
-  { step: "Development", desc: "Code your project using best practices.", icon: FiCode },
-  { step: "Testing", desc: "Ensure everything works perfectly.", icon: FiCheckCircle },
-  { step: "Launch", desc: "Deploy your project to production.", icon: FiPocket },
+const timelinedate = [
+  { title: "graduation  ", plus:"- MTI University in Cairo" , desc: "I graduated from the Faculty of Engineering, MTI University of Information & Technology.", icon: LuGraduationCap , date: "2020"},
+  { title: "Freelance Work", plus:" - Architect " , desc: "I worked as a freelancer after graduating from university. ", icon: SiFreelancer  , date: "2020"},
+  { title: "Work EXPERIENCE", plus:" - Founder & Manager" , desc: "I worked as Founder & Manager of a Private Engineering Office & Workspace", icon: FaUserTie  , date: "2021 - 2018 "},
+  { title: "Work EXPERIENCE ", plus:" - Technical Office Engineer" , desc: "I worked for a Dr. Real Estate Development Compny as a full-time Technical Office Engineer .", icon: BriefcaseBusiness , date: "2021 - 2020"},
+  { title: "Work EXPERIENCE ", plus:" - Site Engineer & Technical Office" , desc: "I worked for a OBAK Compny as a full-time Site Engineer & Technical Office .", icon: BriefcaseBusiness, date: "2025 - 2022" },
+  { title: "Work EXPERIENCE ", plus:" - CGI artist" , desc: "I am working for a LODESTAR-VISUAL Compny as a full-time Site Engineer & Technical Office .", icon: FiPenTool, date: "2025" },
 ];
 
 const TimelineSection = () => {
@@ -119,7 +123,7 @@ const TimelineSection = () => {
       className="w-full min-h-screen bg-black text-white flex flex-col items-center py-20 px-4"
     >
       {/* العنوان */}
-      <div className="text-center mb-16flex justify-center items-center flex-col" ref={sectionRef}>
+      <div className="text-center mb-16 flex justify-center items-center flex-col" ref={sectionRef}>
         <SplitText
           text="Journey"
           className="text-6xl md:text-7xl font-extrabold tracking-tight"
@@ -158,7 +162,7 @@ const TimelineSection = () => {
         ></div>
 
         {/* الكروت */}
-        {timelineData.map((item, index) => {
+        {timelinedate.map((item, index) => {
           const Icon = item.icon;
           return (
             <div
@@ -170,8 +174,15 @@ const TimelineSection = () => {
               {/* الكارت */}
               <div className="w-full md:w-1/2 px-4">
                 <div className="relative group bg-white/5 backdrop-blur-xl p-8 rounded-3xl border border-white/20 shadow-lg hover:shadow-2xl transition-all duration-300">
-                  <h3 className="text-3xl font-bold text-white mb-3">
-                    {item.step}
+                <h4 className="inline-block text-xs tracking-widest uppercase text-gray-300 bg-white/10 px-3 py-1 rounded-md border border-white/20 mb-3">
+                  {item.date}
+                </h4>
+
+
+
+                  <h3 className="text-2xl font-bold text-white mb-3">
+                    {item.title}
+                    <span className="text-xl text-gray-400">{item.plus}</span>
                   </h3>
                   <p className="text-gray-300">{item.desc}</p>
 

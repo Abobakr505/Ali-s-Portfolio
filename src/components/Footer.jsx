@@ -16,23 +16,21 @@ const Footer = () => {
         <div>
           <h5 className='font-medium mb-5'>Services</h5>
           <ul className='flex flex-col gap-2 text-base lg:text-lg'>
-            <li><a href="">Web Design</a></li>
-            <li><a href="">UI / UX</a></li>
-            <li><a href="">Web Development</a></li>
-            <li><a href="">Branding</a></li>
+            <li>3D Modeling</li>
+            <li>Photorealistic Rendering</li>
+            <li>3D Animation</li>
           </ul>
         </div>
         <div>
           <h5 className='font-medium mb-5'>Accessibility</h5>
           <ul className='flex flex-col gap-2 text-base lg:text-lg'>
-            <li>Mon - Fri: 9:00 - 5:00</li>
             <li>24/7 WhatsApp & Email</li>
           </ul>
         </div>
         <div>
           <h5 className='font-medium mb-5'>Contact</h5>
           <ul className='flex flex-col gap-2 text-base lg:text-lg'>
-            <li>johndoe@gmail.com</li>
+            <li>alihasan5335@gmail.com</li>
             <li>+20 102 663 5585</li>
           </ul>
         </div>

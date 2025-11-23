@@ -2,14 +2,14 @@ import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
 import { FiUsers, FiBriefcase, FiCheckCircle, FiAward } from "react-icons/fi";
-
+import { HiEmojiHappy } from "react-icons/hi";
 gsap.registerPlugin(ScrollTrigger);
 
 const stats = [
-  { label: "Clients", value: 120, icon: FiUsers },
-  { label: "Projects", value: 85, icon: FiBriefcase },
-  { label: "Completed", value: 150, icon: FiCheckCircle },
-  { label: "Awards", value: 12, icon: FiAward },
+  { label: "Happy Customers", value: 80 , icon: HiEmojiHappy },
+  { label: "Completed Projects", value: 100 , icon: FiBriefcase },
+  { label: "Years Of Experience", value: 6 , icon: FiCheckCircle },
+  { label: "Good Reviews", value: 70 , icon: FiAward },
 ];
 
 const Statistics = () => {
@@ -53,15 +53,17 @@ const Statistics = () => {
             <div className="w-20 h-20 rounded-full bg-white/10 border border-white/20 flex items-center justify-center mb-4 shadow-lg group-hover:shadow-[0_0_25px_white] transition-all">
               <Icon className="text-white w-10 h-10" />
             </div>
-
+            <div className="flex flex-row items-center gap-2">
             {/* Number */}
             <div
               className="stat-number text-4xl font-bold text-white drop-shadow-lg"
               data-value={value}
             >
-              0
+              0 
+              
             </div>
-
+            <span className=" text-5xl font-bold "> + </span>
+            </div>
             {/* Label */}
             <p className="text-gray-300 mt-2 text-lg tracking-wider">{label}</p>
 

@@ -31,7 +31,7 @@ const CTA = () => {
           to="/contact"
           className="text-black  bg-white hover:bg-black  hover:text-white px-8 py-3 rounded-xl transition-all duration-300 border-white border-2"
         >
-        Book a Call
+         Call to Action 
         </Link>
         </div>
       </div>

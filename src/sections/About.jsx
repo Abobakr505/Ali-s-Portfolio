@@ -74,7 +74,8 @@ const About = () => {
 Skilled in managing construction projects from planning to execution while ensuring quality and efficiency.
 Extensive experience in residential, administrative, and commercial finishing, with a strong background in
 engineering consultancy and project coordination. Proficient in utilizing various engineering and design
-software to achieve high-quality results.</div> 
+software to achieve high-quality results. 
+</div> 
 
     </div>
   );
