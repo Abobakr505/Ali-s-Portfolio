@@ -55,7 +55,7 @@ const moveLens = (clientX, clientY) => {
   const y = clientY - rect.top;
 
   const lensSize = getLensSize(); // ✅ هنا
-  const zoom = 2;
+  const zoom = 3;
 
   let lensX = x - lensSize / 2;
   let lensY = y - lensSize / 2;
