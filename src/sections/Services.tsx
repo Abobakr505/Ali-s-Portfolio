@@ -75,7 +75,7 @@ const Services = () => {
             <div className='flex gap-6 lg:gap-8'>
               <span className="text-gray-400 text-lg lg:text-2xl font-heading tracking-wide block mb-4">02</span>
               <h2 className="text-[8vw] md:text-6xl font-heading font-bold leading-[1]">
-                  Photorealistic Rendering
+                  3D Visualization
               </h2>
             </div>
 
