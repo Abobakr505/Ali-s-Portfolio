@@ -91,7 +91,7 @@ const About = () => {
       <div className='about-text main-container pb-8 pt-4 h-full flex justify-center items-center font-heading text-black text-2xl md:text-3xl xl:text-[40px] 2xl:text-5xl leading-[1.25] text-left'>I am a CG Artist with over 1.5 years of hands-on experience in 3D modeling, animation, and visual storytelling.
 I specialize in creating high-quality 3D visuals, realistic renders, and dynamic animations that transform ideas into compelling visuals.
 I have strong experience in architectural and product visualization, with a sharp eye for detail, lighting, and composition.
-I confidently use industry-standard 3D and animation tools to deliver polished,
+I confidently use industry-standard 3D and animation tools to deliver polished, professional results that meet creative and technical goals.
 </div> 
 
 <div className="flex justify-center mt-2 pb-12">
@@ -105,6 +105,8 @@ I confidently use industry-standard 3D and animation tools to deliver polished,
       shadow-lg hover:shadow-xl
       transition-all duration-300
       inline-flex items-center gap-1
+      hover:bg-white hover:text-black
+      border-2 border-black
     "
   >
     {/* Text */}
@@ -112,7 +114,7 @@ I confidently use industry-standard 3D and animation tools to deliver polished,
       className="
         transition-transform duration-300 
         translate-x-2
-        group-hover:-translate-x-2
+        group-hover:-translate-x-2 
       "
     >
       Download CV

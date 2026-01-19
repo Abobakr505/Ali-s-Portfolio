@@ -9,25 +9,25 @@ const testimonials = [
     name: "Golden View Compny",
     role: "Real Estate Company",
     feedback:
-      "The CGI of Together Project elegantly showcases a modern architectural design, highlighting refined details and strong market appeal.",
+      "The CGI of Together Project highlights contemporary architecture with strong visual appeal.",
   },
   {
-    name: "Sarah Ali",
-    role: "Content Creator",
+    name: "EBNY Compny",
+    role: "Real Estate Company",
     feedback:
-      "Fast, professional, and truly understands what you need. Helped me launch my website in the best possible way!",
+      "The CGI of EBNY Project highlights contemporary architecture with strong visual",
   },
   {
-    name: "Mohamed Tarek",
-    role: "Photographer",
+    name: "SAMCO Compny",
+    role: "Real Estate Company",
     feedback:
-      "Very clean work with great attention to detail. Amazing experience and excellent communication.",
+      "The CGI of JAZURA Project presents a clean, modern design with market impact.",
   },
   {
-    name: "Nour Hassan",
-    role: "Designer",
+    name: "GUIRA Compny",
+    role: "Real Estate Company",
     feedback:
-      "One of the best experiences! Creativity, precision, and fast delivery. Thank you for the great work.",
+      "The CGI of KAIA Project reflects modern architecture and commercial attractiveness.",
   },
 ];
 
