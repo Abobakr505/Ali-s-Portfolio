@@ -83,48 +83,62 @@ const Projects = () => {
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-12">
             {projects.map(({ id, name, company_name, main_image }) => (
-              <Link
-                key={id}
-                to={`/project/${id}`}
-                className="project-item group relative overflow-hidden rounded-3xl cursor-pointer shadow-lg hover:shadow-2xl transition-shadow duration-500"
-              >
-<img
-  src={main_image || "../assets/images/placeholder.webp"}
-  alt={name}
-  onError={(e) => {
-    e.currentTarget.src = "../assets/images/placeholder.webp";
-  }}
-    className="max-w-full max-h-full object-contain
-               transition-transform duration-500
-               group-hover:scale-105"
-/>
-
-                {isMobile ? (
-  // Info bar at bottom (mobile)
-  <div
-    className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 to-transparent p-3 md:p-4 opacity-100 transition-opacity duration-300"
+  <Link
+    key={id}
+    to={`/project/${id}`}
+    className="project-item group relative overflow-hidden rounded-3xl
+               cursor-pointer shadow-lg hover:shadow-2xl
+               transition-shadow duration-500
+               aspect-[4/3]"   // 👈 تحكم في نسبة الكارد
   >
-    <h3 className="font-bold text-white truncate text-xl">{name}</h3>
-    {company_name && (
-      <p className="text-gray-300 truncate text-md ">For {company_name}</p>
-    )}
-  </div>
-) : (
-  // Gradient overlay (desktop)
-  <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/80 opacity-0 group-hover:opacity-100 transition-all duration-500 flex flex-col items-center justify-end text-center p-4 md:p-6">
-    <h3 className="font-heading font-bold text-white mb-1 md:mb-2 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300 text-2xl md:text-3xl">
-      {name}
-    </h3>
-    {company_name && (
-      <p className="text-gray-200 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300 delay-100 text-lg md:text-xl">
-        For {company_name}
-      </p>
-    )}
-  </div>
-)}
+    <img
+      src={main_image || "/assets/images/placeholder.webp"}
+      alt={name}
+      onError={(e) => {
+        e.currentTarget.src = "/assets/images/placeholder.webp";
+      }}
+      className="absolute inset-0 w-full h-full object-cover
+                 transition-transform duration-500
+                 group-hover:scale-105"
+    />
 
-              </Link>
-            ))}
+    {isMobile ? (
+      <div className="absolute bottom-0 left-0 right-0
+                      bg-gradient-to-t from-black/90 to-transparent
+                      p-3 md:p-4">
+        <h3 className="font-bold text-white truncate text-xl">{name}</h3>
+        {company_name && (
+          <p className="text-gray-300 truncate text-md">
+            For {company_name}
+          </p>
+        )}
+      </div>
+    ) : (
+      <div className="absolute inset-0 bg-gradient-to-b
+                      from-transparent via-transparent to-black/80
+                      opacity-0 group-hover:opacity-100
+                      transition-all duration-500
+                      flex flex-col items-center justify-end
+                      text-center p-4 md:p-6">
+        <h3 className="font-heading font-bold text-white mb-1 md:mb-2
+                       transform translate-y-4 group-hover:translate-y-0
+                       transition-transform duration-300
+                       text-2xl md:text-3xl">
+          {name}
+        </h3>
+        {company_name && (
+          <p className="text-gray-200
+                        transform translate-y-4 group-hover:translate-y-0
+                        transition-transform duration-300 delay-100
+                        text-lg md:text-xl">
+            For {company_name}
+          </p>
+        )}
+      </div>
+    )}
+  </Link>
+))}
+
           </div>
         </div>
       </div>

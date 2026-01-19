@@ -4,19 +4,13 @@ import { useGSAP } from '@gsap/react';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { SplitText } from "gsap/SplitText";
 import BlurText from "../components/Blurtext";
-import Stack from '../components/Stack';
-import Img1 from '../assets/images/home.webp';
-import Img2 from '../assets/images/card-2.webp';
-import Img3 from '../assets/images/card-3.webp';
+import Stack from '../components/PixelTransition';
+import AboutImg from '../assets/images/about.webp';
 import { FiDownload } from 'react-icons/fi';
+import PixelTransition from '../components/PixelTransition';
 gsap.registerPlugin(useGSAP, ScrollTrigger, SplitText);
 
 const About = () => {
-  const images = [
-    { id: 1, img: Img1 },
-    { id: 2, img: Img2 },
-    { id: 3, img: Img3 },
-  ];
 
   const handleAnimationComplete = () => {
     console.log('Animation completed!');
@@ -64,20 +58,40 @@ const About = () => {
 
       {/* Image Stack */}
       <div className='flex justify-center items-center py-8'>
-        <Stack
-          randomRotation={true}
-          sensitivity={180}
-          sendToBackOnClick={false}
-          cardDimensions={{ width:320, height: 320 }} // تكبير البطاقة قليلاً
-          cardsData={images}
-        />
+<PixelTransition
+  firstContent={
+    <img
+      src={AboutImg}
+      alt="default pixel transition content, a Me!"
+      style={{ width: "100%", height: "100%", objectFit: "cover" }}
+    />
+  }
+  secondContent={
+    <div
+      style={{
+        width: "100%",
+        height: "100%",
+        display: "grid",
+        placeItems: "center",
+        backgroundColor: "#111"
+      }}
+    >
+      <p className='font-heading' style={{ fontWeight: 900, fontSize: "3rem", color: "#ffffff" }}>CG Artist !</p>
+    </div>
+  }
+  gridSize={8}
+  pixelColor='#ffffff'
+  once={false}
+  animationStepDuration={0.4}
+  className="custom-pixel-card"
+  pixelColor="#ffffff"
+/>
       </div>
 
-      <div className='about-text main-container pb-8 pt-4 h-full flex justify-center items-center font-heading text-black text-2xl md:text-3xl xl:text-[40px] 2xl:text-5xl leading-[1.25] text-left'>A Site Engineer with over 6 years of experience in site supervision, technical office work, and interior finishing.
-Skilled in managing construction projects from planning to execution while ensuring quality and efficiency.
-Extensive experience in residential, administrative, and commercial finishing, with a strong background in
-engineering consultancy and project coordination. Proficient in utilizing various engineering and design
-software to achieve high-quality results. 
+      <div className='about-text main-container pb-8 pt-4 h-full flex justify-center items-center font-heading text-black text-2xl md:text-3xl xl:text-[40px] 2xl:text-5xl leading-[1.25] text-left'>I am a CG Artist with over 1.5 years of hands-on experience in 3D modeling, animation, and visual storytelling.
+I specialize in creating high-quality 3D visuals, realistic renders, and dynamic animations that transform ideas into compelling visuals.
+I have strong experience in architectural and product visualization, with a sharp eye for detail, lighting, and composition.
+I confidently use industry-standard 3D and animation tools to deliver polished,
 </div> 
 
 <div className="flex justify-center mt-2 pb-12">
