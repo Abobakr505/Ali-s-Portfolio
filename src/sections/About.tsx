@@ -44,7 +44,7 @@ const About = () => {
     <div ref={aboutRef} className='h-auto mt-12 mb-12 bg-white rounded-tl-[60px] rounded-tr-[60px] relative z-10'>
       
       {/* Title */}
-      <div className="text-center py-8 lg:py-12 ">
+      <div className="text-center pt-8  ">
         <BlurText
           text="About Me"
           delay={150}
