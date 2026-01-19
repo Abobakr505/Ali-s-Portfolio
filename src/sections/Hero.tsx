@@ -95,7 +95,7 @@ const Hero = () => {
         {/* Text container */}
         <div className="main-container h-screen flex flex-col lg:justify-center items-start lg:py-12 max-lg:pt-40">
           <h1 className="text-3xl lg:text-[3.2vw] uppercase font-heading font-semibold">Ali Hasan</h1>
-          <h2 className="text-5xl lg:text-[7vw] font-heading font-bold leading-[1] tracking-tight mt-3 mb-6">Architect &  <br/>  <span className='text-stroke'> CGI Artist </span></h2>
+          <h2 className="text-5xl lg:text-[7vw] font-heading font-bold leading-[1] tracking-tight mt-3 mb-6">Architect &  <br/>  <span className='text-stroke'> CG Artist </span></h2>
           <Link to="/contact" className="button-85  font-heading  gradient-btn text-lg lg:text-xl font-semibold ">
 
             Let's Work
@@ -105,8 +105,8 @@ const Hero = () => {
         <div className="mr-0 md:mr-20  mb-12 mt-8 md:mt-0">
         <TiltedCard
   imageSrc={heroImage}
-  altText="Ali Hasan - CGI Artist"
-  captionText="Ali Hasan - CGI Artist"
+  altText="Ali Hasan - CG Artist"
+  captionText="Ali Hasan - CG Artist"
 
   rotateAmplitude={10}
   scaleOnHover={1.1}
@@ -115,7 +115,7 @@ const Hero = () => {
   displayOverlayContent={true}
   overlayContent={
     <p className=" p-2 rounded text-sm  font-heading font-extrabold text-gradient">
-      Ali Hasan - CGI Artist
+      Ali Hasan - CG Artist
     </p>
   }
 />
