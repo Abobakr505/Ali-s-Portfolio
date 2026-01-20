@@ -94,7 +94,7 @@ I specialize in creating high-quality architectural and product visualizations, 
 
 <div className="flex justify-center mt-2 pb-12">
   <a
-    href="/Ali_Hassan_CV_&_portfolio.pdf"
+    href="/Ali_Hassan_CV_portfolio.pdf"
     download
     className="
       relative px-8 py-4 bg-black text-white
