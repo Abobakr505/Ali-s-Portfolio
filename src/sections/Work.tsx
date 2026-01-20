@@ -316,7 +316,7 @@ const Work = () => {
               {/* Mobile: Info always visible at bottom */}
               {isMobile ? (
                 <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/90 to-transparent p-3 opacity-100 transition-opacity duration-300">
-                  <h3 className="font-bold text-white truncate text-xl">{name}</h3>
+                  <h3 className="font-bold text-white truncate  text-xl">{name}</h3>
                   {company_name && (
                     <p className="text-gray-300 truncate text-md ">
                       For {company_name}
