@@ -253,8 +253,7 @@ const Work = () => {
           />
 
           <p className="text-base md:text-lg lg:text-xl mt-3 md:mt-4 px-4 md:px-0">
-            A showcase of my selected projects—designed to inspire, engage, and
-            deliver real results.
+            A curated selection of my finest projects—crafted to inspire, captivate, and drive real impact.
           </p>
         </div>
 
