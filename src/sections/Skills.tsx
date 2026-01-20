@@ -6,18 +6,18 @@ import SplitText from "../components/SplitText";
 gsap.registerPlugin(ScrollTrigger);
 
 const skills = [
-  { name: "Photoshop", value: 90 },
+  { name: "Photoshop", value: 85 },
   { name: "Illustrator", value: 85 },
-  { name: "3ds Max", value: 90 },
-  { name: "Blender", value: 95 },
-  { name: "Revit", value: 90 },
+  { name: "3ds Max", value: 80 },
+  { name: "Blender", value: 70 },
+  { name: "Revit", value: 70 },
   { name: "Premiere Pro", value: 85 },
-  { name: "Autocad", value: 99 },
-  { name: "Lumion", value: 89 },
-  { name: "MS OFFICE", value: 98 },
-  { name: "3D Modeling", value: 95 },
-  { name: "3D Animation", value: 90 },
-  { name: "After Effects", value: 85 },
+  { name: "Autocad", value: 80 },
+  { name: "Lumion", value: 80 },
+  { name: "MS OFFICE", value: 85 },
+  { name: "Vantage", value: 85 },
+  { name: "D5 Render", value: 80 },
+  { name: "After Effects", value: 75 },
 ];
 
 const Skills = () => {

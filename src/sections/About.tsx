@@ -88,15 +88,13 @@ const About = () => {
 />
       </div>
 
-      <div className='about-text main-container pb-8 pt-4 h-full flex justify-center items-center font-heading text-black text-2xl md:text-3xl xl:text-[40px] 2xl:text-5xl leading-[1.25] text-left'>I am a CG Artist with over 1.5 years of hands-on experience in 3D modeling, animation, and visual storytelling.
-I specialize in creating high-quality 3D visuals, realistic renders, and dynamic animations that transform ideas into compelling visuals.
-I have strong experience in architectural and product visualization, with a sharp eye for detail, lighting, and composition.
-I confidently use industry-standard 3D and animation tools to deliver polished, professional results that meet creative and technical goals.
+      <div className='about-text main-container pb-8 pt-4 h-full flex justify-center items-center font-heading text-black text-2xl md:text-3xl xl:text-[40px] 2xl:text-5xl leading-[1.25] text-left'>I am a CG Artist with over 1.5 years of hands-on experience in 3D modeling, animation, and visual storytelling, supported by more than 7 years of professional experience in architectural engineering.
+I specialize in creating high-quality architectural and product visualizations, realistic renders, and dynamic animations that bring concepts to life. With a strong eye for detail, lighting, and composition, I deliver visually compelling results that balance creativity with technical precision.
 </div> 
 
 <div className="flex justify-center mt-2 pb-12">
   <a
-    href="/path/to/your-cv.pdf"
+    href="/Ali_Hassan_CV_&_portfolio.pdf"
     download
     className="
       relative px-8 py-4 bg-black text-white

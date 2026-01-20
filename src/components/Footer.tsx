@@ -95,20 +95,20 @@ const Footer = () => {
 {/* Credit */}
 <div className="md:col-span-2 flex justify-center mt-4">
   <a
-    href="https://yasuruha.netlify.app/"
+    href="https://bakrhasan.netlify.app/"
     target="_blank"
     rel="noopener noreferrer"
     className="flex items-center gap-2 text-sm opacity-60 hover:opacity-100 transition"
   >
     <span>
       Designed & Developed by{' '}
-      <span className="font-medium">Yasuruha</span>
+      <span className="font-medium">Bakr Hasan</span>
     </span>
 
     <img
-      src="https://i.postimg.cc/9QLZ03rg/icon.png"
+      src="https://i.postimg.cc/1R0v934j/icon1.webp"
       alt="Yasuruha"
-      className="h-6 w-6 object-contain scale-170 "
+      className="h-6 w-6 object-contain scale-120 "
     />
   </a>
 </div>

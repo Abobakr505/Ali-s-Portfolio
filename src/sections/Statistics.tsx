@@ -6,10 +6,10 @@ import { HiEmojiHappy } from "react-icons/hi";
 gsap.registerPlugin(ScrollTrigger);
 
 const stats = [
-  { label: "Happy Customers", value: 80 , icon: HiEmojiHappy },
-  { label: "Completed Projects", value: 100 , icon: FiBriefcase },
-  { label: "Years Of Experience", value: 6 , icon: FiCheckCircle },
-  { label: "Good Reviews", value: 70 , icon: FiAward },
+  { label: "Happy Customers", value: 70 , icon: HiEmojiHappy },
+  { label: "Completed Projects", value: 50 , icon: FiBriefcase },
+  { label: "Years Of Experience", value: 7 , icon: FiCheckCircle },
+  { label: "Good Reviews", value: 100 , icon: FiAward },
 ];
 
 const Statistics = () => {
