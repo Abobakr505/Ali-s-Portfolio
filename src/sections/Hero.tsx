@@ -94,12 +94,6 @@ gsap.fromTo(".hero-image",
   }
 );
 
-// glow overlay fade in
-gsap.to(".hero-image-wrapper::after", {
-  opacity: 1,
-  duration: 1.5,
-  delay: 0.7
-});
 
 gsap.to(".hero-glow", {
   x: -100,
