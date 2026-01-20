@@ -64,6 +64,44 @@ const Hero = () => {
       ease: "power2.out",
       delay: 1.3, 
     });
+// عند تحميل الصفحة
+gsap.fromTo(".hero-image",
+  {
+    opacity: 0,
+    scale: 1.2,
+    rotate: -2,
+    clipPath: "polygon(0 0, 100% 0, 100% 0, 0 0)"
+  },
+  {
+    opacity: 1,
+    scale: 1,
+    rotate: 0,
+    duration: 1.5,
+    ease: "power3.out",
+    clipPath: "polygon(0 0, 100% 0, 100% 100%, 0 100%)",
+    delay: 0.5
+  }
+);
+
+// glow overlay fade in
+gsap.to(".hero-image-wrapper::after", {
+  opacity: 1,
+  duration: 1.5,
+  delay: 0.7
+});
+
+gsap.to(".hero-glow", {
+  x: -100,
+  y: 50,
+  ease: "back.out(1.7)",
+  scrollTrigger: {
+    trigger: heroRef.current,
+    start: "top top",
+    end: "bottom top",
+    scrub: true,
+  },
+});
+
 
     // Animate star shape
     gsap.from(".star svg", {
@@ -90,11 +128,11 @@ const Hero = () => {
   return (
     <>
       <div ref={heroRef} className='relative overflow-hidden z-0'>
-      <div className=' h-screen flex flex-col md:flex-row justify-center items-center '>
+<div className='h-screen flex flex-col md:flex-row justify-between items-center'>
         
         {/* Text container */}
         <div className="main-container h-screen flex flex-col lg:justify-center items-start lg:py-12 max-lg:pt-40">
-          <h1 className="text-3xl lg:text-[3.2vw] uppercase font-heading font-semibold">Ali Hasan</h1>
+          <h1 className="text-3xl lg:text-[3.2vw]  font-heading font-semibold">Ali Hasan</h1>
           <h2 className="text-5xl lg:text-[7vw] font-heading font-bold leading-[1] tracking-tight mt-3 mb-6">Architect &  <br/>  <span className='text-stroke'> CG Artist </span></h2>
           <Link to="/contact" className="button-85  font-heading  gradient-btn text-lg lg:text-xl font-semibold ">
 
@@ -102,24 +140,16 @@ const Hero = () => {
 
           </Link>
         </div>
-        <div className="mr-0 md:mr-20  mb-12 mt-8 md:mt-0">
-        <TiltedCard
-  imageSrc={heroImage}
-  altText="Ali Hasan - CG Artist"
-  captionText="Ali Hasan - CG Artist"
+{/* Image container */}
+<div className="hero-image-wrapper relative w-full md:w-1/2 h-[60vh] md:h-screen">
+  <div className="hero-glow" />
+  <div
+    className="hero-image absolute inset-0"
+    style={{ backgroundImage: `url(${heroImage})` }}
+  />
+</div>
 
-  rotateAmplitude={10}
-  scaleOnHover={1.1}
-  showMobileWarning={false}
-  showTooltip={true}
-  displayOverlayContent={true}
-  overlayContent={
-    <p className=" p-2 rounded text-sm  font-heading font-extrabold text-gradient">
-      Ali Hasan - CG Artist
-    </p>
-  }
-/>
-        </div>
+
         </div>
         {/* shape */}
         <div className="star absolute -z-1 top-80 lg:top-32 right-[-35%] lg:right-[-12%] opacity-80">

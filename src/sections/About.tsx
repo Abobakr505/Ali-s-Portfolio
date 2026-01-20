@@ -63,7 +63,7 @@ const About = () => {
     <img
       src={AboutImg}
       alt="default pixel transition content, a Me!"
-      style={{ width: "100%", height: "100%", objectFit: "cover" }}
+      style={{ width: "100%", height: "100%", objectFit: "cover" , filter:"grayscale(1)"}}
     />
   }
   secondContent={

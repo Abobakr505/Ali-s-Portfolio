@@ -143,3 +143,20 @@ export default function TiltedCard({
     </figure>
   );
 }
+
+//         <TiltedCard
+//   imageSrc={heroImage}
+//   altText="Ali Hasan - CG Artist"
+//   captionText="Ali Hasan - CG Artist"
+
+//   rotateAmplitude={10}
+//   scaleOnHover={1.1}
+//   showMobileWarning={false}
+//   showTooltip={true}
+//   displayOverlayContent={true}
+//   overlayContent={
+//     <p className=" p-2 rounded text-sm  font-heading font-extrabold text-gradient">
+//       Ali Hasan - CG Artist
+//     </p>
+//   }
+// />
