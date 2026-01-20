@@ -31,7 +31,7 @@ const Services = () => {
       <div className="bg-black text-white">
         <div className='main-container pb-8 lg:pb-12 text-center flex justify-center items-center flex-col' ref={sectionRef} >
           <BlurText
-            text="Services in Detail"
+            text="Distinctive Services"
             delay={150}
             animateBy="words"
             direction="top"
