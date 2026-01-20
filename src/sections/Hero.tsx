@@ -64,7 +64,18 @@ const Hero = () => {
       ease: "power2.out",
       delay: 1.3, 
     });
-// عند تحميل الصفحة
+gsap.to(".hero-image", {
+  y: -80,
+  scale: 1.1,
+  ease: "back.out(1.7)",
+  scrollTrigger: {
+    trigger: heroRef.current,
+    start: "top top",
+    end: "bottom top",
+    scrub: true,
+  },
+});
+
 gsap.fromTo(".hero-image",
   {
     opacity: 0,
