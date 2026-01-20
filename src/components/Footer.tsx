@@ -107,7 +107,7 @@ const Footer = () => {
 
     <img
       src="https://i.postimg.cc/1R0v934j/icon1.webp"
-      alt="Yasuruha"
+      alt="Icon"
       className="h-6 w-6 object-contain scale-120 "
     />
   </a>
