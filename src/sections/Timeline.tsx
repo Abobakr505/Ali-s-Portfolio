@@ -26,7 +26,7 @@ const timelinedate = [
   { title: "Work EXPERIENCE", plus:" - Founder & Manager" , desc: "I worked as Founder & Manager of a Private Engineering Office & Workspace", icon: FaUserTie  , date: "2018 - 2021 "},
   { title: "Work EXPERIENCE ", plus:" - Technical Office Engineer" , desc: "I worked for a Dr. Real Estate Development Compny as a full-time Technical Office Engineer .", icon: BriefcaseBusiness , date: "2020 - 2021"},
   { title: "Work EXPERIENCE ", plus:" - Site Engineer & Technical Office" , desc: "I worked for a OBAK Compny as a full-time Site Engineer & Technical Office .", icon: BriefcaseBusiness, date: "2022 - 2025" },
-  { title: "Work EXPERIENCE ", plus:" - CGI artist" , desc: "I am working for a LODESTAR-VISUAL Compny as a full-time Site Engineer & Technical Office .", icon: FiPenTool, date: "2025" },
+  { title: "Work EXPERIENCE ", plus:" - CG Artist" , desc: "I am Working For a LODESTAR - VISUAL Compny as a Full-Time CG Artist .", icon: FiPenTool, date: "2025" },
 ];
 
 const TimelineSection = () => {

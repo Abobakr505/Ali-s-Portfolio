@@ -108,7 +108,7 @@ const Contact = () => {
           </div>
           <div className="flex items-center space-x-4">
             <FiMapPin className="w-6 h-6 text-white" />
-            <span>Muqattam , Cairo - st 9</span>
+            <span>Mokattam , Cairo - st 9</span>
           </div>
 
           {/* Social Icons */}
