@@ -1,6 +1,6 @@
 name: Supabase Keep Alive
 
-on:
+on: 
   schedule:
     - cron: "0 9 * * *"   # كل يوم الساعة 9 UTC
   workflow_dispatch:
