@@ -47,7 +47,7 @@ const Footer = () => {
           <h5 className='font-medium mb-4 font-heading '>Services</h5>
           <ul className='flex flex-col gap-2 text-base lg:text-lg'>
             <li>3D Modeling</li>
-            <li>Photorealistic Rendering</li>
+            <li>3D Visualization</li>
             <li>3D Animation</li>
           </ul>
         </div>
