@@ -1,21 +1,10 @@
-name: Supabase Keep Alive
+name: Test Action
 
-on: 
-  schedule:
-    - cron: "0 9 * * *"   # كل يوم الساعة 9 UTC
+on:
   workflow_dispatch:
 
 jobs:
-  ping:
+  test:
     runs-on: ubuntu-latest
     steps:
-      - name: Ping Supabase
-        run: |
-          curl -X POST "$SUPABASE_URL/rest/v1/rpc/keep_alive" \
-          -H "apikey: $SUPABASE_ANON_KEY" \
-          -H "Authorization: Bearer $SUPABASE_ANON_KEY" \
-          -H "Content-Type: application/json" \
-          --data '{}'
-        env:
-          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
-          SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
+      - run: echo "Hello Actions"
