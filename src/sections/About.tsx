@@ -89,7 +89,7 @@ const About = () => {
       </div>
 
       <div className='about-text main-container pb-8 pt-4 h-full flex justify-center items-center font-heading text-black text-2xl md:text-3xl xl:text-[40px] 2xl:text-5xl leading-[1.25] text-left'>I am a CG Artist with over 1.5 years of hands-on experience in 3D modeling, animation, and visual storytelling, supported by more than 7 years of professional experience in architectural engineering.
-I specialize in creating high-quality architectural and product visualizations, realistic renders, and dynamic animations that bring concepts to life. With a strong eye for detail, lighting, and composition, I deliver visually compelling results that balance creativity with technical precision.
+I specialize in creating high-quality architectural and product visualizations, realistic renders, and dynamic animations that bring concepts to life. With a strong look for detail, lighting, and composition, I deliver visually compelling results that balance creativity with technical precision.
 </div> 
 
 <div className="flex justify-center mt-2 pb-12">
