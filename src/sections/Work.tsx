@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState, useCallback, useMemo } from "react";
+import React, { useRef, useEffect, useState, useCallback } from "react";
 import { Link } from "react-router-dom";
 import { gsap } from "gsap";
 import { useGSAP } from "@gsap/react";
@@ -13,14 +13,16 @@ const Work = () => {
   const workRef = useRef(null);
   const projectsRef = useRef(null);
   const timelineRef = useRef(null);
+  const entranceAnimationRef = useRef(null);
   const isMobileRef = useRef(false);
-  const resizeTimeoutRef = useRef(null);
+  const hasAnimatedRef = useRef(false);
   
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isImagesLoaded, setIsImagesLoaded] = useState(false);
   const [scrollWidth, setScrollWidth] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
+  const [isInView, setIsInView] = useState(false);
 
   const handleAnimationComplete = () => {
     console.log("All letters have animated!");
@@ -56,7 +58,7 @@ const Work = () => {
     fetchProjects();
   }, []);
 
-  // ✅ Calculate scroll width with debouncing
+  // ✅ Calculate scroll width
   const calculateScrollWidth = useCallback(() => {
     if (!projectsRef.current || !projectsRef.current.parentElement) return;
     
@@ -66,22 +68,18 @@ const Work = () => {
         const containerWidth = projectsRef.current.parentElement.clientWidth;
         const scrollDistance = Math.max(0, projectsWidth - containerWidth);
         setScrollWidth(scrollDistance);
-        
-        // Force ScrollTrigger refresh
-        setTimeout(() => {
-          ScrollTrigger.refresh();
-        }, 50);
       }
     });
   }, []);
 
-  // ✅ Wait for images to load (optimized)
+  // ✅ Wait for images to load
   useEffect(() => {
     if (projects.length === 0 || !projectsRef.current) return;
 
     const images = projectsRef.current.querySelectorAll("img");
     if (images.length === 0) {
       calculateScrollWidth();
+      setIsImagesLoaded(true);
       return;
     }
 
@@ -96,7 +94,6 @@ const Work = () => {
       }
     };
 
-    // Check if images are already loaded
     images.forEach((img) => {
       if (img.complete) {
         loadedCount++;
@@ -119,163 +116,260 @@ const Work = () => {
     };
   }, [projects, calculateScrollWidth]);
 
-  // ✅ Initial entrance animation (runs immediately)
+  // ✅ أنيميشن ظهور المشاريع عند الوصول للقسم (Scroll Trigger)
   useGSAP(() => {
-    if (!projects.length || !projectsRef.current) return;
+    if (!projects.length || !projectsRef.current || hasAnimatedRef.current) return;
     
     const items = projectsRef.current.children;
     
-    // Kill any existing entrance animations
-    gsap.killTweensOf(items);
+    // إخفاء المشاريع أولاً
+    gsap.set(items, {
+      opacity: 0,
+      scale: 0.85,
+      y: 60,
+      rotationY: 15,
+      filter: "blur(8px)",
+      transformPerspective: 1000
+    });
     
-    // Quick entrance animation
-    gsap.fromTo(
-      items,
-      { 
-        x: 100, 
-        opacity: 0,
-        scale: 0.95
+    // إنشاء ScrollTrigger للكشف عن الظهور
+    const scrollTrigger = ScrollTrigger.create({
+      trigger: workRef.current,
+      start: "top 75%", // يبدأ عند وصول 75% من العنصر للشاشة
+      end: "bottom 25%",
+      once: true, // يعمل مرة واحدة فقط
+      onEnter: () => {
+        setIsInView(true);
+        hasAnimatedRef.current = true;
+        
+        // أنيميشن الظهور مع تأثير كروي جميل
+        if (entranceAnimationRef.current) {
+          entranceAnimationRef.current.kill();
+        }
+        
+        entranceAnimationRef.current = gsap.timeline({
+          defaults: {
+            ease: "power3.out",
+            duration: 0.9
+          }
+        });
+        
+        // أنيميشن الدخول المتدرج مع تأثير wave
+        entranceAnimationRef.current.to(items, {
+          opacity: 1,
+          scale: 1,
+          y: 0,
+          rotationY: 0,
+          filter: "blur(0px)",
+          stagger: {
+            each: 0.12,
+            from: "center", // يبدأ من المنتصف ويتجه للخارج
+            grid: "auto",
+            ease: "power2.inOut"
+          }
+        }, 0);
+        
+        // تأثير إضافي للأول والآخر
+        if (items.length > 0) {
+          entranceAnimationRef.current.to(
+            items[0],
+            {
+              scale: 1.05,
+              duration: 0.4,
+              yoyo: true,
+              repeat: 1,
+              ease: "power1.inOut"
+            },
+            0.3
+          );
+          
+          entranceAnimationRef.current.to(
+            items[items.length - 1],
+            {
+              scale: 1.05,
+              duration: 0.4,
+              yoyo: true,
+              repeat: 1,
+              ease: "power1.inOut"
+            },
+            0.5
+          );
+        }
+        
+        // بعد انتهاء أنيميشن الظهور، نحسب scrollWidth للسكرول الأفقي
+        entranceAnimationRef.current.add(() => {
+          if (!isMobileRef.current) {
+            setTimeout(() => {
+              calculateScrollWidth();
+            }, 300);
+          }
+        });
       },
-      {
-        x: 0,
-        opacity: 1,
-        scale: 1,
-        duration: 0.8,
-        stagger: 0.05,
-        ease: "power3.out",
-        overwrite: "auto",
-        immediateRender: false
+      onLeaveBack: () => {
+        // إعادة تعيين عند الخروج (اختياري)
+        if (!hasAnimatedRef.current) {
+          gsap.set(items, {
+            opacity: 0,
+            scale: 0.85,
+            y: 60,
+            rotationY: 15,
+            filter: "blur(8px)"
+          });
+        }
       }
-    );
+    });
     
-  }, { scope: workRef, dependencies: [projects] });
+    return () => {
+      if (scrollTrigger) scrollTrigger.kill();
+    };
+  }, { scope: workRef, dependencies: [projects, calculateScrollWidth] });
 
-  // ✅ Desktop scroll animation (runs after scrollWidth is calculated)
+  // ✅ أنيميشن السكرول الأفقي (للكمبيوتر فقط) - يعمل بعد ظهور المشاريع
   useEffect(() => {
-    if (!projects.length || !projectsRef.current || isMobile || scrollWidth <= 0) return;
+    if (!isInView || !projects.length || !projectsRef.current || isMobile || scrollWidth <= 0) return;
     
-    // Kill existing timeline and ScrollTrigger
+    // تنظيف timeline السابق
     if (timelineRef.current) {
       timelineRef.current.kill();
     }
     
     const containerWidth = projectsRef.current.parentElement.clientWidth;
     
-    // Create new timeline for horizontal scroll
-    const tl = gsap.timeline({
+    // إنشاء timeline للسكرول الأفقي
+    timelineRef.current = gsap.timeline({
       scrollTrigger: {
         trigger: workRef.current,
-        start: "top top",
-        end: () => `+=${scrollWidth + containerWidth}`,
+        start: "top top", // يبدأ من أعلى القسم
+        end: () => `+=${scrollWidth + containerWidth + 500}`, // مسافة إضافية للراحة
         pin: true,
-        scrub: 0.6,
+        scrub: 0.7, // تأثير سلس مع السكرول
         anticipatePin: 1,
         invalidateOnRefresh: true,
         markers: false,
         onRefresh: () => {
-          // Recalculate on refresh
           calculateScrollWidth();
+        },
+        onEnter: () => {
+          // إضافة تأثير رفع خفيف عند بداية السكرول
+          gsap.to(projectsRef.current.children, {
+            y: -10,
+            duration: 0.5,
+            stagger: 0.05,
+            ease: "power2.out"
+          });
         }
-      },
+      }
     });
     
-    // Horizontal scroll animation
-    tl.to(
+    // أنيميشن السكرول الأفقي الرئيسي
+    timelineRef.current.to(
       projectsRef.current,
       {
         x: -scrollWidth,
         duration: 1,
         ease: "power1.inOut",
-      },
-      0.5 // Start after a short delay
+        onStart: () => {
+          // إضافة تأثير اهتزاز خفيف للعنصر الأول عند البدء
+          if (projectsRef.current.children[0]) {
+            gsap.to(projectsRef.current.children[0], {
+              rotationZ: 1,
+              duration: 0.3,
+              yoyo: true,
+              repeat: 3,
+              ease: "power1.inOut"
+            });
+          }
+        }
+      }
     );
     
-    timelineRef.current = tl;
+    // تأثير إضافي للأخير عند نهاية السكرول
+    timelineRef.current.to(
+      projectsRef.current.children[projectsRef.current.children.length - 1],
+      {
+        scale: 1.03,
+        duration: 0.3,
+        yoyo: true,
+        repeat: 1,
+        ease: "power1.inOut"
+      },
+      "-=0.3"
+    );
     
     return () => {
       if (timelineRef.current) {
         timelineRef.current.kill();
       }
     };
-  }, [scrollWidth, isMobile, projects.length, calculateScrollWidth]);
+  }, [isInView, scrollWidth, isMobile, projects.length, calculateScrollWidth]);
 
-  // ✅ Mobile animation (staggered entrance)
-  useEffect(() => {
-    if (!isMobile || !projects.length || !projectsRef.current) return;
+  // ✅ أنيميشن الموبايل (يظهر عند الوصول)
+  useGSAP(() => {
+    if (!isMobile || !projects.length || !projectsRef.current || hasAnimatedRef.current) return;
     
     const items = projectsRef.current.children;
     
-    gsap.fromTo(
-      items,
-      {
-        scale: 0.92,
-        opacity: 0,
-        y: 40,
-        filter: "blur(6px)",
-      },
-      {
-        scale: 1,
-        opacity: 1,
-        y: 0,
-        filter: "blur(0px)",
-        duration: 0.8,
-        stagger: {
-          each: 0.1,
-          from: "start",
-        },
-        ease: "power3.out",
-        scrollTrigger: {
-          trigger: projectsRef.current,
-          start: "top 85%",
-          once: true,
-        },
+    // إخفاء العناصر أولاً
+    gsap.set(items, {
+      opacity: 0,
+      scale: 0.9,
+      y: 50,
+      filter: "blur(6px)"
+    });
+    
+    // ScrollTrigger للكشف عن الظهور على الموبايل
+    const scrollTrigger = ScrollTrigger.create({
+      trigger: projectsRef.current,
+      start: "top 85%",
+      once: true,
+      onEnter: () => {
+        hasAnimatedRef.current = true;
+        
+        gsap.to(items, {
+          opacity: 1,
+          scale: 1,
+          y: 0,
+          filter: "blur(0px)",
+          duration: 0.8,
+          stagger: {
+            each: 0.15,
+            from: "start",
+            ease: "power2.out"
+          },
+          ease: "back.out(1.4)"
+        });
       }
-    );
-  }, [isMobile, projects.length]);
+    });
+    
+    return () => {
+      if (scrollTrigger) scrollTrigger.kill();
+    };
+  }, { scope: workRef, dependencies: [isMobile, projects.length] });
 
-  // ✅ Handle window resize with debounce
+  // ✅ Handle window resize
   useEffect(() => {
+    let timeoutId;
+    
     const handleResize = () => {
-      if (resizeTimeoutRef.current) {
-        clearTimeout(resizeTimeoutRef.current);
-      }
-      
-      resizeTimeoutRef.current = setTimeout(() => {
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(() => {
         calculateScrollWidth();
-        
-        // Update mobile state
-        const mobile = window.innerWidth <= 768;
-        if (mobile !== isMobile) {
-          setIsMobile(mobile);
-          isMobileRef.current = mobile;
-        }
-        
-        // Refresh ScrollTrigger after resize
-        setTimeout(() => {
-          ScrollTrigger.refresh();
-        }, 100);
+        ScrollTrigger.refresh();
       }, 200);
     };
 
     window.addEventListener("resize", handleResize);
-    
-    // Initial calculation
-    calculateScrollWidth();
-    
     return () => {
       window.removeEventListener("resize", handleResize);
-      if (resizeTimeoutRef.current) {
-        clearTimeout(resizeTimeoutRef.current);
-      }
+      clearTimeout(timeoutId);
     };
-  }, [calculateScrollWidth, isMobile]);
+  }, [calculateScrollWidth]);
 
-  // ✅ Cleanup on unmount
+  // ✅ Cleanup
   useEffect(() => {
     return () => {
-      if (timelineRef.current) {
-        timelineRef.current.kill();
-      }
+      if (timelineRef.current) timelineRef.current.kill();
+      if (entranceAnimationRef.current) entranceAnimationRef.current.kill();
       ScrollTrigger.getAll().forEach(trigger => trigger.kill());
     };
   }, []);
@@ -332,7 +426,7 @@ const Work = () => {
         }`}
         style={{
           scrollbarWidth: "none",
-          msOverflowStyle: "none",
+          msOverflowStyle: "none"
         }}
       >
         <style>{`
@@ -348,7 +442,7 @@ const Work = () => {
           } mt-4 md:mt-6 will-change-transform`}
           style={{
             width: "max-content",
-            paddingRight: isMobile ? "2rem" : "50vw",
+            paddingRight: isMobile ? "2rem" : "50vw"
           }}
         >
           {projects.map(({ id, name, company_name, main_image }, index) => (
@@ -366,9 +460,8 @@ const Work = () => {
                   src={main_image}
                   alt={name}
                   className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                  loading={index < 2 ? "eager" : "lazy"} // Load first two images eagerly
+                  loading={index < 2 ? "eager" : "lazy"}
                   onLoad={() => {
-                    // Trigger scroll width calculation when first image loads
                     if (index === 0) {
                       setTimeout(calculateScrollWidth, 100);
                     }
@@ -403,18 +496,23 @@ const Work = () => {
       </div>
 
       {/* Scroll / Swipe Indicator */}
-      <div className="main-container mt-6 md:mt-8 flex items-center justify-center">
-        <div className="flex items-center gap-2 text-sm text-gray-600">
-          {isMobile ? (
-            <ChevronsRight className="w-7 h-7 animate-pulse" />
-          ) : (
-            <Mouse className="w-5 h-5 animate-pulse" />
-          )}
-          <span>
-            {isMobile ? "Swipe" : "Scroll"} horizontally to view all projects
-          </span>
+      {isInView && !isMobile && scrollWidth > 0 && (
+        <div className="main-container mt-6 md:mt-8 flex items-center justify-center">
+          <div className="flex items-center gap-2 text-sm text-gray-600 animate-pulse">
+            <Mouse className="w-5 h-5" />
+            <span>Scroll horizontally to view all projects</span>
+          </div>
         </div>
-      </div>
+      )}
+
+      {isMobile && (
+        <div className="main-container mt-6 md:mt-8 flex items-center justify-center">
+          <div className="flex items-center gap-2 text-sm text-gray-600">
+            <ChevronsRight className="w-7 h-7 animate-pulse" />
+            <span>Swipe horizontally to view all projects</span>
+          </div>
+        </div>
+      )}
     </section>
   );
 };
