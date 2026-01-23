@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState, useCallback } from "react";
+import React, { useRef, useEffect, useState, useCallback, useMemo } from "react";
 import { Link } from "react-router-dom";
 import { gsap } from "gsap";
 import { useGSAP } from "@gsap/react";
@@ -14,7 +14,8 @@ const Work = () => {
   const projectsRef = useRef(null);
   const timelineRef = useRef(null);
   const isMobileRef = useRef(false);
-
+  const resizeTimeoutRef = useRef(null);
+  
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isImagesLoaded, setIsImagesLoaded] = useState(false);
@@ -32,10 +33,9 @@ const Work = () => {
       setIsMobile(mobile);
       isMobileRef.current = mobile;
     };
-
+    
     checkIfMobile();
     window.addEventListener("resize", checkIfMobile);
-
     return () => window.removeEventListener("resize", checkIfMobile);
   }, []);
 
@@ -56,26 +56,47 @@ const Work = () => {
     fetchProjects();
   }, []);
 
-  // ✅ Wait for images to load before calculating scroll width
+  // ✅ Calculate scroll width with debouncing
+  const calculateScrollWidth = useCallback(() => {
+    if (!projectsRef.current || !projectsRef.current.parentElement) return;
+    
+    requestAnimationFrame(() => {
+      if (projectsRef.current && projectsRef.current.parentElement) {
+        const projectsWidth = projectsRef.current.scrollWidth;
+        const containerWidth = projectsRef.current.parentElement.clientWidth;
+        const scrollDistance = Math.max(0, projectsWidth - containerWidth);
+        setScrollWidth(scrollDistance);
+        
+        // Force ScrollTrigger refresh
+        setTimeout(() => {
+          ScrollTrigger.refresh();
+        }, 50);
+      }
+    });
+  }, []);
+
+  // ✅ Wait for images to load (optimized)
   useEffect(() => {
     if (projects.length === 0 || !projectsRef.current) return;
 
     const images = projectsRef.current.querySelectorAll("img");
-    let loadedCount = 0;
-
     if (images.length === 0) {
       calculateScrollWidth();
       return;
     }
 
+    let loadedCount = 0;
+    const totalImages = images.length;
+
     const handleImageLoad = () => {
       loadedCount++;
-      if (loadedCount === images.length) {
+      if (loadedCount === totalImages) {
         setIsImagesLoaded(true);
         calculateScrollWidth();
       }
     };
 
+    // Check if images are already loaded
     images.forEach((img) => {
       if (img.complete) {
         loadedCount++;
@@ -85,7 +106,7 @@ const Work = () => {
       }
     });
 
-    if (loadedCount === images.length) {
+    if (loadedCount === totalImages) {
       setIsImagesLoaded(true);
       calculateScrollWidth();
     }
@@ -96,129 +117,168 @@ const Work = () => {
         img.removeEventListener("error", handleImageLoad);
       });
     };
-  }, [projects]);
+  }, [projects, calculateScrollWidth]);
 
-  const calculateScrollWidth = useCallback(() => {
-    if (!projectsRef.current) return;
-
-    setTimeout(() => {
-      if (projectsRef.current) {
-        const projectsWidth = projectsRef.current.scrollWidth;
-        const containerWidth = projectsRef.current.parentElement.clientWidth;
-        const scrollDistance = Math.max(0, projectsWidth - containerWidth);
-        setScrollWidth(scrollDistance);
-      }
-    }, 100);
-  }, []);
-
-  // ✅ GSAP Animation for Desktop and Mobile
+  // ✅ Initial entrance animation (runs immediately)
   useGSAP(() => {
     if (!projects.length || !projectsRef.current) return;
+    
+    const items = projectsRef.current.children;
+    
+    // Kill any existing entrance animations
+    gsap.killTweensOf(items);
+    
+    // Quick entrance animation
+    gsap.fromTo(
+      items,
+      { 
+        x: 100, 
+        opacity: 0,
+        scale: 0.95
+      },
+      {
+        x: 0,
+        opacity: 1,
+        scale: 1,
+        duration: 0.8,
+        stagger: 0.05,
+        ease: "power3.out",
+        overwrite: "auto",
+        immediateRender: false
+      }
+    );
+    
+  }, { scope: workRef, dependencies: [projects] });
 
+  // ✅ Desktop scroll animation (runs after scrollWidth is calculated)
+  useEffect(() => {
+    if (!projects.length || !projectsRef.current || isMobile || scrollWidth <= 0) return;
+    
     // Kill existing timeline and ScrollTrigger
     if (timelineRef.current) {
       timelineRef.current.kill();
-      ScrollTrigger.getAll().forEach((trigger) => {
-        if (trigger.trigger === workRef.current) {
-          trigger.kill();
-        }
-      });
     }
-
-    const items = projectsRef.current.children;
-
-    if (!isMobileRef.current && scrollWidth > 0) {
-      // Desktop animation
-      const containerWidth = projectsRef.current.parentElement.clientWidth;
-
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: workRef.current,
-          start: "top top",
-          end: () => `+=${scrollWidth + containerWidth}`,
-          pin: true,
-          scrub: 0.5,
-          anticipatePin: 1,
-          invalidateOnRefresh: true,
-          markers: false,
-        },
-      });
-
-      // Initial entrance
-      tl.fromTo(
-        items,
-        { x: 300, opacity: 0 },
-        {
-          x: 0,
-          opacity: 1,
-          duration: 1,
-          stagger: 0.08,
-          ease: "power3.out",
+    
+    const containerWidth = projectsRef.current.parentElement.clientWidth;
+    
+    // Create new timeline for horizontal scroll
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: workRef.current,
+        start: "top top",
+        end: () => `+=${scrollWidth + containerWidth}`,
+        pin: true,
+        scrub: 0.6,
+        anticipatePin: 1,
+        invalidateOnRefresh: true,
+        markers: false,
+        onRefresh: () => {
+          // Recalculate on refresh
+          calculateScrollWidth();
         }
-      );
-
-      // Horizontal scroll (removed delay)
-      tl.to(
-        projectsRef.current,
-        {
-          x: -scrollWidth,
-          duration: 1,
-          ease: "power1.inOut",
-        }
-      );
-
-      timelineRef.current = tl;
-    } else if (isMobileRef.current) {
-      // Mobile appearance animation: fade in with scale and stagger
-     gsap.fromTo(
-  items,
-  {
-    scale: 0.92,
-    opacity: 0,
-    y: 40,
-    filter: "blur(6px)",
-  },
-  {
-    scale: 1,
-    opacity: 1,
-    y: 0,
-    filter: "blur(0px)",
-    duration: 1,
-    stagger: {
-      each: 0.12,
-      from: "start",
-    },
-    ease: "power3.out",
-    scrollTrigger: {
-      trigger: projectsRef.current,
-      start: "top 85%",
-      once: true,
-    },
-  }
-);
-
-    }
-
-    ScrollTrigger.refresh();
-
+      },
+    });
+    
+    // Horizontal scroll animation
+    tl.to(
+      projectsRef.current,
+      {
+        x: -scrollWidth,
+        duration: 1,
+        ease: "power1.inOut",
+      },
+      0.5 // Start after a short delay
+    );
+    
+    timelineRef.current = tl;
+    
     return () => {
       if (timelineRef.current) {
         timelineRef.current.kill();
       }
     };
-  }, { scope: workRef, dependencies: [projects, scrollWidth, isImagesLoaded, isMobile] });
+  }, [scrollWidth, isMobile, projects.length, calculateScrollWidth]);
 
-  // ✅ Handle window resize
+  // ✅ Mobile animation (staggered entrance)
+  useEffect(() => {
+    if (!isMobile || !projects.length || !projectsRef.current) return;
+    
+    const items = projectsRef.current.children;
+    
+    gsap.fromTo(
+      items,
+      {
+        scale: 0.92,
+        opacity: 0,
+        y: 40,
+        filter: "blur(6px)",
+      },
+      {
+        scale: 1,
+        opacity: 1,
+        y: 0,
+        filter: "blur(0px)",
+        duration: 0.8,
+        stagger: {
+          each: 0.1,
+          from: "start",
+        },
+        ease: "power3.out",
+        scrollTrigger: {
+          trigger: projectsRef.current,
+          start: "top 85%",
+          once: true,
+        },
+      }
+    );
+  }, [isMobile, projects.length]);
+
+  // ✅ Handle window resize with debounce
   useEffect(() => {
     const handleResize = () => {
-      if (isImagesLoaded) {
-        calculateScrollWidth();
+      if (resizeTimeoutRef.current) {
+        clearTimeout(resizeTimeoutRef.current);
       }
+      
+      resizeTimeoutRef.current = setTimeout(() => {
+        calculateScrollWidth();
+        
+        // Update mobile state
+        const mobile = window.innerWidth <= 768;
+        if (mobile !== isMobile) {
+          setIsMobile(mobile);
+          isMobileRef.current = mobile;
+        }
+        
+        // Refresh ScrollTrigger after resize
+        setTimeout(() => {
+          ScrollTrigger.refresh();
+        }, 100);
+      }, 200);
     };
 
     window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, [isImagesLoaded, calculateScrollWidth]);
+    
+    // Initial calculation
+    calculateScrollWidth();
+    
+    return () => {
+      window.removeEventListener("resize", handleResize);
+      if (resizeTimeoutRef.current) {
+        clearTimeout(resizeTimeoutRef.current);
+      }
+    };
+  }, [calculateScrollWidth, isMobile]);
+
+  // ✅ Cleanup on unmount
+  useEffect(() => {
+    return () => {
+      if (timelineRef.current) {
+        timelineRef.current.kill();
+      }
+      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+    };
+  }, []);
 
   if (loading) {
     return (
@@ -251,15 +311,13 @@ const Work = () => {
             textAlign="center md:text-left"
             onLetterAnimationComplete={handleAnimationComplete}
           />
-
           <p className="text-base md:text-lg lg:text-xl mt-3 md:mt-4 px-4 md:px-0">
             A curated selection of my finest projects—crafted to inspire, captivate, and drive real impact.
           </p>
         </div>
-
         <Link
           to="/projects"
-          className="text-white font-bold  bg-black font-heading hover:bg-white hover:text-black px-6 md:px-8 py-2 md:py-3 rounded-full transition-all duration-300 border-2 border-black text-md "
+          className="text-white font-bold bg-black font-heading hover:bg-white hover:text-black px-6 md:px-8 py-2 md:py-3 rounded-full transition-all duration-300 border-2 border-black text-md"
         >
           Explore All
         </Link>
@@ -293,7 +351,7 @@ const Work = () => {
             paddingRight: isMobile ? "2rem" : "50vw",
           }}
         >
-          {projects.map(({ id, name, company_name, main_image }) => (
+          {projects.map(({ id, name, company_name, main_image }, index) => (
             <Link
               key={id}
               to={`/project/${id}`}
@@ -308,18 +366,22 @@ const Work = () => {
                   src={main_image}
                   alt={name}
                   className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                  loading="lazy"
+                  loading={index < 2 ? "eager" : "lazy"} // Load first two images eagerly
+                  onLoad={() => {
+                    // Trigger scroll width calculation when first image loads
+                    if (index === 0) {
+                      setTimeout(calculateScrollWidth, 100);
+                    }
+                  }}
                 />
               </div>
 
               {/* Mobile: Info always visible at bottom */}
               {isMobile ? (
                 <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/90 to-transparent p-3 opacity-100 transition-opacity duration-300">
-                  <h3 className="font-bold text-white truncate  text-xl">{name}</h3>
+                  <h3 className="font-bold text-white truncate text-xl">{name}</h3>
                   {company_name && (
-                    <p className="text-gray-300 truncate text-md ">
-                      For {company_name}
-                    </p>
+                    <p className="text-gray-300 truncate text-md">For {company_name}</p>
                   )}
                 </div>
               ) : (
@@ -346,9 +408,8 @@ const Work = () => {
           {isMobile ? (
             <ChevronsRight className="w-7 h-7 animate-pulse" />
           ) : (
-            <Mouse  className="w-5 h-5 animate-pulse" />
+            <Mouse className="w-5 h-5 animate-pulse" />
           )}
-
           <span>
             {isMobile ? "Swipe" : "Scroll"} horizontally to view all projects
           </span>
