@@ -95,7 +95,7 @@ const Footer = () => {
 {/* Credit */}
 <div className="md:col-span-2 flex justify-center mt-4">
   <a
-    href="https://bakrhasan.netlify.app/"
+    href="https://bakrhasan.vercel.app/"
     target="_blank"
     rel="noopener noreferrer"
     className="flex items-center gap-2 text-sm opacity-60 hover:opacity-100 transition"
