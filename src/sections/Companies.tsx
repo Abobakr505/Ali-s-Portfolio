@@ -2,12 +2,14 @@ import React, { useRef, useEffect, useState } from "react";
 import { gsap } from "gsap";
 import Img1 from '../assets/images/compny-1.webp';
 import Img2 from '../assets/images/compny-2.webp';
+import Img3 from '../assets/images/compny-3.jpg';
 import Folder from '../components/Folder';
 import { ArrowUpFromDot } from 'lucide-react';
 
 const companies = [
-  { id: 1, name: "LODESTAR", logo: Img1 },
-  { id: 2, name: "OBAK", logo: Img2 },
+  { id: 1, name: "LodeStar", logo: Img1 },
+  { id: 2, name: "Obak", logo: Img2 },
+    { id: 3, name: "Vanilla Studio", logo: Img3 },
 ];
 
 const Companies = () => {

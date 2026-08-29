@@ -32,7 +32,7 @@ const darkenColor = (hex: string, percent: number): string => {
 };
 
 const Folder: React.FC<FolderProps> = ({ color = '#4f46e5', size = 1, items = [], className = '' }) => {
-  const maxItems = 2;
+  const maxItems = 3;
   const papers = items.slice(0, maxItems);
   while (papers.length < maxItems) {
     papers.push(null);
@@ -44,7 +44,11 @@ const Folder: React.FC<FolderProps> = ({ color = '#4f46e5', size = 1, items = []
   );
 
   const folderBackColor = darkenColor(color, 0.08);
-  const paperColors = [darkenColor('#ffffff', 0.1), darkenColor('#ffffff', 0.05), '#ffffff'];
+  const paperColors = [
+    darkenColor('#ffffff', 0.15),
+    darkenColor('#ffffff', 0.1),
+    darkenColor('#ffffff', 0.05),
+  ];
 
   const handleClick = () => {
     setOpen(prev => !prev);
@@ -79,7 +83,8 @@ const Folder: React.FC<FolderProps> = ({ color = '#4f46e5', size = 1, items = []
 
   const getOpenTransform = (index: number) => {
     if (index === 0) return 'translate(-120%, -70%) rotate(-15deg)';
-    if (index === 1) return 'translate(10%, -70%) rotate(15deg)';
+    if (index === 1) return 'translate(10%, -70%) rotate(0deg)';
+    if (index === 2) return 'translate(-50%, -100%) rotate(5deg)';
     return '';
   };
 
@@ -97,7 +102,8 @@ const Folder: React.FC<FolderProps> = ({ color = '#4f46e5', size = 1, items = []
         >
           {/* الأوراق */}
           {papers.map((item, i) => {
-            const sizeClasses = i === 0 ? 'w-[70%] h-[80%]' : i === 1 ? 'w-[80%] h-[80%]' : 'w-[90%] h-[80%]';
+            const sizeClasses =
+              i === 0 ? 'w-[65%] h-[78%]' : i === 1 ? 'w-[75%] h-[80%]' : i === 2 ? 'w-[85%] h-[82%]' : 'w-[90%] h-[80%]';
             const transformStyle = open
               ? `${getOpenTransform(i)} translate(${paperOffsets[i].x}px, ${paperOffsets[i].y}px)`
               : undefined;

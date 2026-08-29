@@ -507,8 +507,8 @@ const Work = () => {
 
       {isMobile && (
         <div className="main-container mt-6 md:mt-8 flex items-center justify-center">
-          <div className="flex items-center gap-2 text-sm text-gray-600">
-            <ChevronsRight className="w-7 h-7 animate-pulse" />
+          <div className="flex items-center gap-2 text-sm text-gray-600 animate-pulse">
+            <ChevronsRight className="w-7 h-7 " />
             <span>Swipe horizontally to view all projects</span>
           </div>
         </div>
