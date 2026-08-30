@@ -517,18 +517,46 @@ const getVimeoEmbedUrl = (url) => {
             </a>
           )}
         </div>
-        {/* Project Navigation */}
-        <div className="flex justify-between items-center pt-8 border-t border-purple-500/20">
-          <Link
-            to="/projects"
-            className="px-6 py-3 bg-white/5 backdrop-blur-sm rounded-lg border border-purple-500/30 hover:bg-purple-900/50 transition-all duration-300"
-          >
-            ← Back to Projects
-          </Link>
-          <div className="text-sm text-gray-400">
-            Project {projects.findIndex(p => p.id === project.id) + 1} of {projects.length}
-          </div>
-        </div>
+{/* Project Navigation */}
+<div className="flex flex-wrap md:flex-nowrap justify-between items-center gap-4 pt-8 border-t border-purple-500/20">
+
+
+
+    {projects.length > 0 && (
+      <button
+        onClick={() => {
+          const currentIndex = projects.findIndex(p => p.id === project.id);
+          const prevIndex = (currentIndex - 1 + projects.length) % projects.length;
+          const prevProject = projects[prevIndex];
+          if (prevProject) {
+            navigate(`/project/${prevProject.id}`);
+          }
+        }}
+        className="px-6 py-3 bg-white/5 backdrop-blur-sm rounded-lg border border-purple-500/30 hover:bg-purple-900/50 transition-all duration-300"
+      >
+        ← Previous
+      </button>
+    )}
+  <div className="w-full md:w-auto order-3 md:order-none text-center text-sm text-gray-400">
+    Project {projects.findIndex(p => p.id === project.id) + 1} of {projects.length}
+  </div>
+
+    {projects.length > 0 && (
+      <button
+        onClick={() => {
+          const currentIndex = projects.findIndex(p => p.id === project.id);
+          const nextIndex = (currentIndex + 1) % projects.length;
+          const nextProject = projects[nextIndex];
+          if (nextProject) {
+            navigate(`/project/${nextProject.id}`);
+          }
+        }}
+        className="px-6 py-3 bg-white/5 backdrop-blur-sm rounded-lg border border-purple-500/30 hover:bg-purple-900/50 transition-all duration-300"
+      >
+        Next →
+      </button>
+    )}
+</div>
       </div>
     </div>
   );
