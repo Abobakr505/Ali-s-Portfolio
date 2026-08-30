@@ -38,53 +38,55 @@ const Contact = () => {
     });
   }, []);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsSubmitting(true);
+const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  e.preventDefault();
 
-    if (!formRef.current) {
-      console.error("Form reference is NULL");
-      return;
-    }
+  if (!formRef.current) {
+    console.error("Form reference is NULL");
+    return;
+  }
 
-    emailjs
-      .sendForm(
-        "service_kn1l5bf", // service ID
-        "template_md13q7w", // template ID
-        formRef.current, // THE FORM
-        "ElJguIdYayF9qn97a" // public key
-      )
-      .then(
-        () => {
-          Swal.fire({
-            title: "Sent!",
-            text: "Your message has been sent successfully. We will contact you soon!",
-            icon: "success",
-            background: "#ffffff",
-            color: "#065f46",
-            confirmButtonColor: "#10b981",
-            iconColor: "#10b981",
-          });
+  setIsSubmitting(true);
 
-          formRef.current.reset();
-          setIsSubmitting(false);
-        },
-        () => {
-          Swal.fire({
-            title: "Error!",
-            text: "An error occurred while sending your message. Please try again.",
-            icon: "error",
-            background: "#ffffff",
-            color: "#b91c1c",
-            confirmButtonColor: "#ef4444",
-            iconColor: "#ef4444",
-          });
+  try {
+    const response = await emailjs.sendForm(
+      "service_kn1l5bf",
+      "template_md13q7w",
+      formRef.current,
+      "ElJguIdYayF9qn97a"
+    );
 
-          setIsSubmitting(false);
-        }
-      );
-  };
+    console.log("EmailJS SUCCESS:", response.status, response.text);
 
+    await Swal.fire({
+      title: "Sent!",
+      text: "Your message has been sent successfully. We will contact you soon!",
+      icon: "success",
+      background: "#ffffff",
+      color: "#065f46",
+      confirmButtonColor: "#10b981",
+      iconColor: "#10b981",
+    });
+
+    formRef.current.reset();
+  } catch (error: any) {
+    console.error("EmailJS ERROR:", error);
+    console.error("Status:", error?.status);
+    console.error("Text:", error?.text);
+
+    Swal.fire({
+      title: "Error!",
+      text: error?.text || "Failed to send the message.",
+      icon: "error",
+      background: "#ffffff",
+      color: "#b91c1c",
+      confirmButtonColor: "#ef4444",
+      iconColor: "#ef4444",
+    });
+  } finally {
+    setIsSubmitting(false);
+  }
+};
   return (
     <section className="w-full min-h-screen bg-black text-white flex flex-col items-center py-28 px-4">
       <div className="text-center mb-16">

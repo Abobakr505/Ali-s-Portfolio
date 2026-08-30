@@ -414,7 +414,46 @@ const DepthCarousel = ({
       root?.removeEventListener('focusout', onFocusOut);
     };
   }, [autoplay, autoplayDelay, count, navigateBy]);
+  // Simple reveal-on-view animation: fade + slide up once the carousel
+  // scrolls into the viewport (plays only once).
+  const introPlayedRef = useRef(false);
+  useEffect(() => {
+    const root = rootRef.current;
+    if (!root || !count) return;
 
+    const prefersReduced =
+      typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    const playIntro = () => {
+      if (introPlayedRef.current) return;
+      introPlayedRef.current = true;
+
+      layout(posRef.current); // resting transforms محسوبة الأول
+
+      if (prefersReduced || reducedRef.current) return;
+
+      gsap.fromTo(
+        root,
+        { opacity: 0, y: 40 },
+        { opacity: 1, y: 0, duration: 0.9, ease: 'power3.out' }
+      );
+    };
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            playIntro();
+            observer.disconnect();
+          }
+        });
+      },
+      { threshold: 0.25 }
+    );
+
+    observer.observe(root);
+    return () => observer.disconnect();
+  }, [count, layout]);
   useEffect(() => {
     layout(posRef.current);
   }, [layout, depth, spread, tilt, tiltDirection, visibleCards, falloff, blur, cardWidth, cardHeight, radius, count]);
@@ -485,10 +524,10 @@ const DepthCarousel = ({
                 className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent p-3 sm:p-4"
               >
                 {item.title && (
-                  <h3 className="truncate text-xl font-bold text-white sm:text-2xl">{item.title}</h3>
+                  <h3 className="truncate text-2xl font-bold text-white sm:text-xl">{item.title}</h3>
                 )}
                 {item.subtitle && (
-                  <p className="truncate text-md text-gray-300 sm:text-lg">{item.subtitle}</p>
+                  <p className="truncate text-xl text-gray-300 sm:text-lg">{item.subtitle}</p>
                 )}
               </div>
             )}

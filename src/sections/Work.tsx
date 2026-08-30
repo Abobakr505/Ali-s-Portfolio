@@ -404,7 +404,7 @@ const Work = () => {
   return (
     <section ref={workRef} className="bg-white text-black py-16 overflow-hidden relative">
       {/* Title */}
-      <div className="main-container pb-6 md:pb-12 flex max-md:flex-col gap-4 md:gap-6 justify-between items-center">
+      <div className="main-container md:pb-12 flex max-md:flex-col gap-4 md:gap-6 justify-between items-center">
         <div className="max-w-xl text-center md:text-left">
           <SplitText
             text="Featured Projects"
@@ -450,8 +450,8 @@ const Work = () => {
     blur={6}
     autoplay={false}
     loop
-    cardWidth={380}
-    cardHeight={330}
+    cardWidth={500}
+    cardHeight={420}
     radius={20}
     tint="#05060a"
     duration={700}
