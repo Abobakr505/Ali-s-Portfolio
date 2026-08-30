@@ -109,7 +109,7 @@ const DepthCarousel = ({
 
   const rootRef = useRef<HTMLDivElement | null>(null);
   const stageRef = useRef<HTMLDivElement | null>(null);
-  const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const cardRefs = useRef<(HTMLAnchorElement | null)[]>([]);
   const overlayRefs = useRef<(HTMLSpanElement | null)[]>([]);
   const infoRefs = useRef<(HTMLDivElement | null)[]>([]);
 
@@ -359,13 +359,12 @@ const DepthCarousel = ({
   const onCardClick = useCallback(
     (index: number) => {
       if (dragRef.current?.moved) return;
-      if (index === focusRef.current) {
-        // Card is already focused/centered — treat the click as an activation
-        // (e.g. navigate to the project page).
-        onCardActivateRef.current?.(index, data[index]);
-        return;
+      if (index !== focusRef.current) {
+        setFocus(index, true);
       }
-      setFocus(index, true);
+      if (data[index]?.to) {
+        onCardActivateRef.current?.(index, data[index]);
+      }
     },
     [setFocus, data]
   );
@@ -445,17 +444,23 @@ const DepthCarousel = ({
     >
       <div className="absolute inset-0 [transform-style:preserve-3d]" ref={stageRef}>
         {data.map((item, i) => (
-          <div
+          <a
             key={i}
-            className="absolute left-1/2 top-1/2 cursor-pointer overflow-hidden bg-[#0b0d12] shadow-[0_30px_60px_-20px_rgba(0,0,0,0.65),0_8px_20px_-10px_rgba(0,0,0,0.5)] [transform:translate(-50%,-50%)] [transform-origin:center] [will-change:transform,opacity,filter]"
-            ref={el => {
+            href={item.to || undefined}
+            className="absolute left-1/2 top-1/2 block cursor-pointer overflow-hidden bg-[#0b0d12] shadow-[0_30px_60px_-20px_rgba(0,0,0,0.65),0_8px_20px_-10px_rgba(0,0,0,0.5)] [transform:translate(-50%,-50%)] [transform-origin:center] [will-change:transform,opacity,filter]"
+            ref={(el) => {
               cardRefs.current[i] = el;
             }}
             style={{ width: cardWidth, height: cardHeight, borderRadius: radius }}
             aria-roledescription="slide"
             aria-label={`${i + 1} of ${count}${item.title ? `: ${item.title}` : ''}`}
             aria-hidden={active !== i}
-            onClick={() => onCardClick(i)}
+            onClick={(e) => {
+              if (item.to && !(e.metaKey || e.ctrlKey || e.shiftKey)) {
+                e.preventDefault();
+              }
+              onCardClick(i);
+            }}
           >
             <img
               className="block h-full w-full select-none object-cover [pointer-events:none] [-webkit-user-drag:none]"
@@ -465,7 +470,7 @@ const DepthCarousel = ({
             />
             <span
               className="pointer-events-none absolute inset-0 opacity-0 mix-blend-multiply"
-              ref={el => {
+              ref={(el) => {
                 overlayRefs.current[i] = el;
               }}
               style={{ background: tint }}
@@ -473,7 +478,7 @@ const DepthCarousel = ({
 
             {(item.title || item.subtitle) && (
               <div
-                ref={el => {
+                ref={(el) => {
                   infoRefs.current[i] = el;
                 }}
                 className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent p-3 sm:p-4"
@@ -486,7 +491,7 @@ const DepthCarousel = ({
                 )}
               </div>
             )}
-          </div>
+          </a>
         ))}
       </div>
 
