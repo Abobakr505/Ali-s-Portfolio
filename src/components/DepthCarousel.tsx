@@ -109,7 +109,7 @@ const DepthCarousel = ({
 
   const rootRef = useRef<HTMLDivElement | null>(null);
   const stageRef = useRef<HTMLDivElement | null>(null);
-  const cardRefs = useRef<(HTMLAnchorElement | null)[]>([]);
+  const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
   const overlayRefs = useRef<(HTMLSpanElement | null)[]>([]);
   const infoRefs = useRef<(HTMLDivElement | null)[]>([]);
 
@@ -359,12 +359,13 @@ const DepthCarousel = ({
   const onCardClick = useCallback(
     (index: number) => {
       if (dragRef.current?.moved) return;
-      if (index !== focusRef.current) {
-        setFocus(index, true);
-      }
-      if (data[index]?.to) {
+      if (index === focusRef.current) {
+        // Card is already focused/centered — treat the click as an activation
+        // (e.g. navigate to the project page).
         onCardActivateRef.current?.(index, data[index]);
+        return;
       }
+      setFocus(index, true);
     },
     [setFocus, data]
   );
@@ -442,7 +443,7 @@ const DepthCarousel = ({
       onPointerCancel={onPointerEnd}
       onKeyDown={onKeyDown}
     >
-      <div className="absolute inset-0 [transform-style:preserve-3d]" ref={stageRef}>
+ <div className="absolute inset-0 [transform-style:preserve-3d]" ref={stageRef}>
         {data.map((item, i) => (
           <a
             key={i}
@@ -494,6 +495,7 @@ const DepthCarousel = ({
           </a>
         ))}
       </div>
+
 
       {showControls && count > 1 && (
         <>
