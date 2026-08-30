@@ -10,7 +10,6 @@ import {
   FiGithub,
   FiFacebook,
 } from "react-icons/fi";
-import emailjs from "emailjs-com";
 import Swal from "sweetalert2";
 import useDocumentTitle from "../hooks/useDocumentTitle";
 import { Send } from "lucide-react";
@@ -18,10 +17,27 @@ import { motion } from "motion/react";
 import { FaWhatsapp } from "react-icons/fa";
 gsap.registerPlugin(ScrollTrigger);
 
+// ضع القيم دي في ملف .env في جذر المشروع (Vite):
+// VITE_TELEGRAM_BOT_TOKEN=xxxxx
+// VITE_TELEGRAM_CHAT_ID=xxxxx
+const BOT_TOKEN = import.meta.env.VITE_TELEGRAM_BOT_TOKEN;
+const CHAT_ID = import.meta.env.VITE_TELEGRAM_CHAT_ID;
+
+const SUBJECT_OPTIONS = [
+  "Project Inquiry",
+  "Job Opportunity",
+  "Freelance Work",
+  "Collaboration",
+  "Technical Question",
+  "Just Saying Hi",
+  "Other",
+];
+
 const Contact = () => {
   useDocumentTitle("Ali's Portfolio | Contact ");
   const formRef = useRef<HTMLFormElement>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [focusedField, setFocusedField] = useState<string | null>(null);
 
   useEffect(() => {
     if (!formRef.current) return;
@@ -38,157 +54,326 @@ const Contact = () => {
     });
   }, []);
 
-const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-  e.preventDefault();
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
 
-  if (!formRef.current) {
-    console.error("Form reference is NULL");
-    return;
-  }
+    if (!formRef.current) {
+      console.error("Form reference is NULL");
+      return;
+    }
 
-  setIsSubmitting(true);
+    const formData = new FormData(formRef.current);
+    const name = (formData.get("name") as string)?.trim();
+    const email = (formData.get("email") as string)?.trim();
+    const subject = (formData.get("subject") as string)?.trim() || "No subject";
+    const message = (formData.get("message") as string)?.trim();
 
-  try {
-    const response = await emailjs.sendForm(
-      "service_kn1l5bf",
-      "template_md13q7w",
-      formRef.current,
-      "ElJguIdYayF9qn97a"
-    );
+    if (!name || !email || !message) {
+      Swal.fire({
+        title: "Missing Fields!",
+        text: "Please fill in all required fields.",
+        icon: "warning",
+        background: "#ffffff",
+        color: "#92400e",
+        confirmButtonColor: "#f59e0b",
+        iconColor: "#f59e0b",
+      });
+      return;
+    }
 
-    console.log("EmailJS SUCCESS:", response.status, response.text);
+    if (!BOT_TOKEN || !CHAT_ID) {
+      console.error("Telegram BOT_TOKEN or CHAT_ID is missing from env variables");
+      Swal.fire({
+        title: "Error!",
+        text: "Server is not configured correctly. Please try again later.",
+        icon: "error",
+        background: "#ffffff",
+        color: "#b91c1c",
+        confirmButtonColor: "#ef4444",
+        iconColor: "#ef4444",
+      });
+      return;
+    }
 
-    await Swal.fire({
-      title: "Sent!",
-      text: "Your message has been sent successfully. We will contact you soon!",
-      icon: "success",
-      background: "#ffffff",
-      color: "#065f46",
-      confirmButtonColor: "#10b981",
-      iconColor: "#10b981",
-    });
+    setIsSubmitting(true);
 
-    formRef.current.reset();
-  } catch (error: any) {
-    console.error("EmailJS ERROR:", error);
-    console.error("Status:", error?.status);
-    console.error("Text:", error?.text);
+    // رسالة احترافية منسقة (Markdown) تروح للتليجرام
+    const telegramMessage = `
+📩 *New Contact Form Submission*
 
-    Swal.fire({
-      title: "Error!",
-      text: error?.text || "Failed to send the message.",
-      icon: "error",
-      background: "#ffffff",
-      color: "#b91c1c",
-      confirmButtonColor: "#ef4444",
-      iconColor: "#ef4444",
-    });
-  } finally {
-    setIsSubmitting(false);
-  }
-};
+👤 *Name:* ${name}
+📧 *Email:* ${email}
+📝 *Subject:* ${subject}
+
+💬 *Message:*
+${message}
+
+—
+🕒 Sent: ${new Date().toLocaleString("en-GB", { timeZone: "Africa/Cairo" })}
+🌐 Source: Portfolio Website
+    `.trim();
+
+    try {
+      const response = await fetch(
+        `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            chat_id: CHAT_ID,
+            text: telegramMessage,
+            parse_mode: "Markdown",
+          }),
+        }
+      );
+
+      const data = await response.json();
+
+      if (!data.ok) {
+        throw new Error(data.description || "Telegram API error");
+      }
+
+      await Swal.fire({
+        title: "Sent!",
+        text: "Your message has been sent successfully. We will contact you soon!",
+        icon: "success",
+        background: "#ffffff",
+        color: "#065f46",
+        confirmButtonColor: "#10b981",
+        iconColor: "#10b981",
+      });
+
+      formRef.current.reset();
+    } catch (error: any) {
+      console.error("Telegram ERROR:", error);
+
+      Swal.fire({
+        title: "Error!",
+        text: error?.message || "Failed to send the message.",
+        icon: "error",
+        background: "#ffffff",
+        color: "#b91c1c",
+        confirmButtonColor: "#ef4444",
+        iconColor: "#ef4444",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const inputClass = (field: string) =>
+    `w-full bg-white/[0.04] backdrop-blur-md border p-4 rounded-2xl text-white placeholder-gray-500 outline-none transition-all duration-300 ${
+      focusedField === field
+        ? "border-white/60 bg-white/[0.07] shadow-[0_0_0_4px_rgba(255,255,255,0.06)]"
+        : "border-white/10 hover:border-white/25"
+    }`;
+
   return (
-    <section className="w-full min-h-screen bg-black text-white flex flex-col items-center py-28 px-4">
-      <div className="text-center mb-16">
-        <h1 className="text-6xl md:text-7xl font-bold font-heading tracking-tight">Contact</h1>
-        <div className="mx-auto w-32 h-1  bg-white rounded-full mt-3 shadow-lg"></div>
-        <p className="text-gray-400 mt-4 max-w-2xl mx-auto">
+    <section className="relative w-full min-h-screen bg-black text-white flex flex-col items-center py-28 px-4 overflow-hidden">
+      {/* Ambient background glow */}
+      <div className="pointer-events-none absolute inset-0">
+        <div className="absolute top-1/4 -left-32 w-96 h-96 bg-white/[0.04] rounded-full blur-3xl" />
+        <div className="absolute bottom-1/4 -right-32 w-96 h-96 bg-white/[0.03] rounded-full blur-3xl" />
+      </div>
+
+      <div className="relative text-center mb-16">
+        <span className="inline-block text-xs tracking-[0.3em] text-gray-500 uppercase mb-3">
+          Get In Touch
+        </span>
+        <h1 className="text-6xl md:text-7xl font-bold font-heading tracking-tight">
+          Contact
+        </h1>
+        <div className="mx-auto w-24 h-[3px] bg-gradient-to-r from-transparent via-white to-transparent rounded-full mt-4" />
+        <p className="text-gray-400 mt-5 max-w-2xl mx-auto text-lg">
           Have a project in mind or just want to say hi? Let's get in touch!
         </p>
       </div>
 
-      <div className="w-full max-w-4xl grid grid-cols-1 md:grid-cols-2 gap-12">
+      <div className="relative w-full max-w-5xl grid grid-cols-1 md:grid-cols-5 gap-8 md:gap-10">
         {/* Contact Info */}
-        <div className="flex flex-col justify-center space-y-6">
-          <div className="flex items-center space-x-4">
-            <FiMail className="w-6 h-6 text-white" />
-            <span>alihasan5335@gmail.com</span>
-          </div>
-          <div className="flex items-center space-x-4">
-            <FiPhone className="w-6 h-6 text-white" />
-            <span>+20 102 663 5585</span>
-          </div>
-          <div className="flex items-center space-x-4">
-            <FiMapPin className="w-6 h-6 text-white" />
-            <span>Mokattam , Cairo - st 9</span>
+        <div className="md:col-span-2 flex flex-col justify-center space-y-4 bg-white/[0.03] border border-white/10 rounded-3xl p-8 backdrop-blur-md">
+          <h2 className="text-xl font-heading font-bold mb-2">Let's talk</h2>
+          <p className="text-gray-400 text-sm mb-4">
+            Feel free to reach out through any of these channels.
+          </p>
+
+          <a
+            href="mailto:alihasan5335@gmail.com"
+            className="flex items-center gap-4 p-3 rounded-xl hover:bg-white/5 transition-all duration-300 group"
+          >
+            <span className="flex items-center justify-center w-10 h-10 rounded-full bg-white/10 group-hover:bg-white/20 transition-all duration-300 shrink-0">
+              <FiMail className="w-5 h-5 text-white" />
+            </span>
+            <span className="text-gray-300 group-hover:text-white transition-colors break-all">
+              alihasan5335@gmail.com
+            </span>
+          </a>
+
+          <a
+            href="tel:+201026635585"
+            className="flex items-center gap-4 p-3 rounded-xl hover:bg-white/5 transition-all duration-300 group"
+          >
+            <span className="flex items-center justify-center w-10 h-10 rounded-full bg-white/10 group-hover:bg-white/20 transition-all duration-300 shrink-0">
+              <FiPhone className="w-5 h-5 text-white" />
+            </span>
+            <span className="text-gray-300 group-hover:text-white transition-colors">
+              +20 102 663 5585
+            </span>
+          </a>
+
+          <div className="flex items-center gap-4 p-3 rounded-xl">
+            <span className="flex items-center justify-center w-10 h-10 rounded-full bg-white/10 shrink-0">
+              <FiMapPin className="w-5 h-5 text-white" />
+            </span>
+            <span className="text-gray-300">El-Monib , Cairo </span>
           </div>
 
           {/* Social Icons */}
-          <div className="flex space-x-4 mt-4">
+          <div className="flex space-x-3 mt-6 pt-6 border-t border-white/10">
             <a
               href="https://www.facebook.com/profile.php?id=100003329446201&mibextid=ZbWKwL"
               target="_blank"
-              className="hover:text-blue-500 hover:scale-115 transition-all duration-300"
+              rel="noopener noreferrer"
+              className="w-10 h-10 flex items-center justify-center rounded-full bg-white/5 hover:bg-blue-500 hover:scale-110 transition-all duration-300"
             >
-              <FiFacebook className="w-6 h-6" />
+              <FiFacebook className="w-5 h-5" />
             </a>
             <a
               href="https://www.instagram.com/alihasan5335"
               target="_blank"
-              className="hover:text-purple-400 hover:scale-115 transition-all duration-300"
+              rel="noopener noreferrer"
+              className="w-10 h-10 flex items-center justify-center rounded-full bg-white/5 hover:bg-purple-500 hover:scale-110 transition-all duration-300"
             >
-              <FiInstagram className="w-6 h-6" />
+              <FiInstagram className="w-5 h-5" />
             </a>
             <a
               href="https://www.linkedin.com/in/ali-hassan-607932198/"
               target="_blank"
-              className="hover:text-blue-400 hover:scale-115 transition-all duration-300"
+              rel="noopener noreferrer"
+              className="w-10 h-10 flex items-center justify-center rounded-full bg-white/5 hover:bg-blue-400 hover:scale-110 transition-all duration-300"
             >
-              <FiLinkedin className="w-6 h-6" />
+              <FiLinkedin className="w-5 h-5" />
             </a>
             <a
               href="https://wa.me/+201026635585"
               target="_blank"
-              className="hover:text-green-400 hover:scale-115 transition-all duration-300"
+              rel="noopener noreferrer"
+              className="w-10 h-10 flex items-center justify-center rounded-full bg-white/5 hover:bg-green-500 hover:scale-110 transition-all duration-300"
             >
-              <FaWhatsapp className="w-6 h-6" />
+              <FaWhatsapp className="w-5 h-5" />
             </a>
           </div>
         </div>
 
         {/* Contact Form */}
-        <form ref={formRef} onSubmit={handleSubmit} className="flex flex-col space-y-6">
-          <input
-            type="text"
-            name="name"
-            placeholder="Your Name"
-            className="bg-white/5 backdrop-blur-md border border-white/20 p-4 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-white/30"
-            required
-          />
+        <form
+          ref={formRef}
+          onSubmit={handleSubmit}
+          className="md:col-span-3 flex flex-col space-y-5 bg-white/[0.03] border border-white/10 rounded-3xl p-8 backdrop-blur-md"
+        >
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+            <div>
+              <label className="block text-xs text-gray-500 mb-2 tracking-wide uppercase">
+                Name
+              </label>
+              <input
+                type="text"
+                name="name"
+                placeholder="Your Name"
+                onFocus={() => setFocusedField("name")}
+                onBlur={() => setFocusedField(null)}
+                className={inputClass("name")}
+                required
+              />
+            </div>
 
-          <input
-            type="email"
-            name="email"
-            placeholder="Your Email"
-            className="bg-white/5 backdrop-blur-md border border-white/20 p-4 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-white/30"
-            required
-          />
+            <div>
+              <label className="block text-xs text-gray-500 mb-2 tracking-wide uppercase">
+                Email
+              </label>
+              <input
+                type="email"
+                name="email"
+                placeholder="you@example.com"
+                onFocus={() => setFocusedField("email")}
+                onBlur={() => setFocusedField(null)}
+                className={inputClass("email")}
+                required
+              />
+            </div>
+          </div>
 
-          <textarea
-            name="message"
-            placeholder="Your Message"
-            rows={6}
-            className="bg-white/5 backdrop-blur-md border border-white/20 p-4 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-white/30 resize-none"
-            required
-          ></textarea>
+          <div>
+            <label className="block text-xs text-gray-500 mb-2 tracking-wide uppercase">
+              Subject
+            </label>
+            <div className="relative">
+              <select
+                name="subject"
+                defaultValue=""
+                onFocus={() => setFocusedField("subject")}
+                onBlur={() => setFocusedField(null)}
+                className={`${inputClass("subject")} appearance-none cursor-pointer pr-10`}
+                required
+              >
+                <option value="" disabled className="bg-black text-gray-500">
+                  Select a subject...
+                </option>
+                {SUBJECT_OPTIONS.map((option) => (
+                  <option key={option} value={option} className="bg-black text-white">
+                    {option}
+                  </option>
+                ))}
+              </select>
+              <svg
+                className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+              </svg>
+            </div>
+          </div>
 
-<button
-  type="submit"
-  className="group flex font-heading font-bold  justify-center items-center gap-2 text-black bg-white hover:bg-black hover:text-white px-6 py-3 rounded-xl transition-all duration-300 border-white border-2"
->
-  {isSubmitting ? (
-    <>
-      <span>Sending...</span>
-<motion.div animate={{ rotate: 360 }} transition={{ duration: 1, repeat: Infinity, ease: "linear" }} className="w-5 h-5 border-2 border-white border-t-transparent rounded-full " />
-    </>
-  ) : (
-    <>
-      <span>Send Message</span>
-      <Send className="w-6 h-6" />
-    </>
-  )}
-</button>
+          <div>
+            <label className="block text-xs text-gray-500 mb-2 tracking-wide uppercase">
+              Message
+            </label>
+            <textarea
+              name="message"
+              placeholder="Tell me about your project or just say hello..."
+              rows={5}
+              onFocus={() => setFocusedField("message")}
+              onBlur={() => setFocusedField(null)}
+              className={`${inputClass("message")} resize-none`}
+              required
+            ></textarea>
+          </div>
 
+          <button
+            type="submit"
+            disabled={isSubmitting}
+            className="group flex font-heading font-bold justify-center items-center gap-2 text-black bg-white hover:bg-black hover:text-white px-6 py-4 rounded-2xl transition-all duration-300 border-2 border-white disabled:opacity-60 disabled:cursor-not-allowed mt-2"
+          >
+            {isSubmitting ? (
+              <>
+                <span>Sending...</span>
+                <motion.div
+                  animate={{ rotate: 360 }}
+                  transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                  className="w-5 h-5 border-2 border-white border-t-transparent rounded-full "
+                />
+              </>
+            ) : (
+              <>
+                <span>Send Message</span>
+                <Send className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" />
+              </>
+            )}
+          </button>
         </form>
       </div>
     </section>

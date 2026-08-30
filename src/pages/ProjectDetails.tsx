@@ -6,7 +6,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { MotionPathPlugin } from "gsap/MotionPathPlugin";
 import useDocumentTitle from "../hooks/useDocumentTitle";
 import { supabase } from '../lib/supabase'; // Adjust path if needed
-import { MapPin , Sparkles, ZoomIn  } from 'lucide-react';
+import { MapPin, Sparkles, ZoomIn, ArrowLeft, ChevronLeft, ChevronRight, ExternalLink } from 'lucide-react';
 gsap.registerPlugin(ScrollTrigger, MotionPathPlugin);
 
 const ProjectDetails = () => {
@@ -291,117 +291,179 @@ const getVimeoEmbedUrl = (url) => {
 
   useDocumentTitle(project ? `Ali's Portfolio | ${project.name}` : "Ali's Portfolio");
 
-  if (loading) return (
-    <div className="min-h-screen flex items-center justify-center bg-black text-white flex-col gap-4">
-      <div className="w-12 h-12 border-4 border-white-500 border-t-transparent rounded-full animate-spin"></div>
-      Loading Project...
-    </div>
-  );
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-black text-white flex-col gap-4">
+        <div className="relative w-12 h-12">
+          <div className="absolute inset-0 rounded-full border-4 border-purple-500/15"></div>
+          <div className="absolute inset-0 rounded-full border-4 border-t-purple-400 border-r-transparent border-b-transparent border-l-transparent animate-spin"></div>
+        </div>
+        <span className="text-gray-400 text-sm tracking-wide uppercase">Loading Project...</span>
+      </div>
+    );
+  }
 
   if (error || !project) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-black to-purple-900 text-white relative overflow-hidden">
         <div className="particles-container absolute inset-0"></div>
-        <div className="text-center z-10">
-          <h2 className="text-4xl font-bold mb-4">Project Not Found</h2>
-          <button onClick={() => navigate('/')} className="px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-600 rounded-lg font-bold hover:scale-105 transition-transform duration-300">
-            Back to Home
+        <div className="text-center z-10 px-6">
+          <div className="w-16 h-16 mx-auto mb-5 rounded-full bg-red-500/15 flex items-center justify-center">
+            <span className="text-red-400 text-2xl">!</span>
+          </div>
+          <h2 className="text-4xl font-bold mb-2 font-heading">Project Not Found</h2>
+          <p className="text-gray-400 mb-8">The project you're looking for doesn't exist or was removed.</p>
+          <button onClick={() => navigate('/')} className="px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-600 rounded-xl font-bold hover:scale-105 transition-transform duration-300 inline-flex items-center gap-2">
+            <ArrowLeft className="w-4 h-4" /> Back to Home
           </button>
         </div>
       </div>
     );
   }
 
+  const currentIndex = projects.findIndex(p => p.id === project.id);
+
   return (
     <div className="min-h-screen bg-black text-white relative overflow-hidden">
-      {/* Animated Background Particles */}
+      {/* Animated Background */}
       <div className="particles-container absolute inset-0"></div>
-    
+      <div className="absolute top-0 left-0 w-96 h-96 bg-gradient-to-tr from-purple-600 via-pink-500 to-blue-400 rounded-full opacity-10 blur-3xl -z-10"></div>
+      <div className="absolute bottom-0 right-0 w-96 h-96 bg-gradient-to-tr from-cyan-400 via-blue-500 to-purple-700 rounded-full opacity-10 blur-3xl -z-10"></div>
+
       <div className="relative z-10 px-4 py-28 max-w-6xl mx-auto">
-        {/* Project Name */}
-        <h2 ref={titleRef} className="text-6xl md:text-7xl font-heading font-bold mb-2 bg-gradient-to-r from-white to-purple-200 bg-clip-text text-transparent">
-          {project.name}
-        </h2>
-        {/* Client Company Name */}
-        {project.company_name && (
-          <p ref={companyRef} className="text-3xl md:text-4xl font-semibold mb-4 bg-gradient-to-r from-purple-300 to-pink-300 bg-clip-text text-transparent">
-            For {project.company_name}
-          </p>
-        )}
+
+        {/* Back link */}
+        <Link
+          to="/projects"
+          className="inline-flex items-center gap-2 text-sm text-gray-400 hover:text-white mb-8 transition-colors duration-300 group"
+        >
+          <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform duration-300" />
+          Back to Projects
+        </Link>
+
+        {/* Header */}
+        <div className="mb-10">
+          <h2 ref={titleRef} className="text-5xl md:text-7xl font-heading font-bold mb-3 bg-gradient-to-r from-white to-purple-200 bg-clip-text text-transparent leading-tight">
+            {project.name}
+          </h2>
+          {project.company_name && (
+            <p ref={companyRef} className="text-2xl md:text-3xl font-semibold bg-gradient-to-r from-purple-300 to-pink-300 bg-clip-text text-transparent">
+              For {project.company_name}
+            </p>
+          )}
+        </div>
 
         {/* Main Image */}
-<div
-  ref={mainRef}
-  className="relative mb-6 rounded-2xl overflow-hidden shadow-2xl border border-purple-500/20 touch-none"
-  onMouseMove={handleMouseMove}
-  onMouseLeave={() => !isTouchDevice.current && setZoomActive(false)}
-  onTouchStart={handleTouchStart}
-  onTouchMove={handleTouchMove}
->
+        <div
+          ref={mainRef}
+          className="relative mb-6 rounded-3xl overflow-hidden shadow-2xl border border-purple-500/20 touch-none"
+          onMouseMove={handleMouseMove}
+          onMouseLeave={() => !isTouchDevice.current && setZoomActive(false)}
+          onTouchStart={handleTouchStart}
+          onTouchMove={handleTouchMove}
+        >
+          <img
+            ref={imgRef}
+            src={mainImage || "../assets/images/placeholder.webp"}
+            alt={project.name}
+            onLoad={handleImageLoad}
+            onError={(e) => (e.currentTarget.src = "../assets/images/placeholder.webp")}
+            className="w-full h-auto object-cover"
+          />
 
-  <img
-    ref={imgRef}
-    src={mainImage || "../assets/images/placeholder.webp"}
-    alt={project.name}
-    onLoad={handleImageLoad}
-    onError={(e) => (e.currentTarget.src = "../assets/images/placeholder.webp")}
-    className="w-full h-auto object-cover"
-  />
+          <button
+            onClick={() => setZoomActive(!zoomActive)}
+            className={`
+              absolute top-4 right-4 z-20
+              p-3 rounded-full backdrop-blur-md border border-white/10
+              transition-all duration-300
+              ${
+                zoomActive
+                  ? "bg-purple-600 scale-110 shadow-lg shadow-purple-500/60"
+                  : "bg-black/60 hover:bg-purple-600"
+              }
+            `}
+          >
+            <ZoomIn className="text-white text-lg" />
+          </button>
 
-<button
-  onClick={() => setZoomActive(!zoomActive)}
-  className={`
-    absolute top-4 right-4 z-20
-    p-3 rounded-full
-    transition-all duration-300
-    ${
-      zoomActive
-        ? "bg-purple-600 scale-110 shadow-lg shadow-purple-500/60"
-        : "bg-black/70 hover:bg-purple-600"
-    }
-  `}
->
-  <ZoomIn  className="text-white text-lg"/>
-</button>
-
-
-{zoomActive && (
-  <div
-    ref={lensRef}
-    className="absolute z-30 pointer-events-none rounded-full border-2 border-white shadow-2xl"
-    style={{
-      backgroundImage: `url(${mainImage})`,
-      backgroundRepeat: "no-repeat",
-    }}
-  />
-)}
-
-
-</div>
+          {zoomActive && (
+            <div
+              ref={lensRef}
+              className="absolute z-30 pointer-events-none rounded-full border-2 border-white shadow-2xl"
+              style={{
+                backgroundImage: `url(${mainImage})`,
+                backgroundRepeat: "no-repeat",
+              }}
+            />
+          )}
+        </div>
 
         {/* Thumbnails */}
         {project.sub_images && project.sub_images.length > 0 && (
-          <div ref={thumbnailsRef} className="flex gap-4 overflow-x-auto mb-12 py-4 scrollbar-hide">
+          <div ref={thumbnailsRef} className="flex gap-4 overflow-x-auto mb-12 py-2 scrollbar-hide">
             {[project.main_image, ...project.sub_images].map((img, i) => (
               <div
                 key={i}
-                className="flex-shrink-0 relative group cursor-pointer transform transition-all duration-300 hover:scale-110"
+                className="flex-shrink-0 relative group cursor-pointer transform transition-all duration-300 hover:scale-105"
                 onClick={() => handleThumbnailClick(img)}
               >
                 <img
                   src={img}
                   alt={`Thumbnail ${i}`}
-                  className="w-20 h-20 md:w-28 md:h-28 object-cover rounded-xl shadow-lg border-2 border-transparent group-hover:border-purple-500 transition-all duration-300"
+                  className={`w-20 h-20 md:w-28 md:h-28 object-cover rounded-xl shadow-lg border-2 transition-all duration-300 ${
+                    mainImage === img ? "border-purple-500" : "border-transparent group-hover:border-purple-500/60"
+                  }`}
                 />
-                <div className={`absolute inset-0 rounded-xl bg-purple-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 ${mainImage === img ? 'opacity-100 border-2 border-purple-500' : ''}`}></div>
               </div>
             ))}
           </div>
         )}
+
+        {/* Info cards row */}
+        {(project.location || project.project_type || project.partner_company) && (
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-12">
+            {project.partner_company && (
+              <div ref={partnerCompanyRef} className="p-5 bg-white/5 backdrop-blur-sm rounded-2xl border border-purple-500/20">
+                <span className="block text-xs uppercase tracking-widest text-purple-300/80 mb-1">Collaboration</span>
+                <p className="text-lg font-semibold text-white">{project.partner_company}</p>
+              </div>
+            )}
+            {project.location && (
+              <div ref={locationRef} className="p-5 bg-white/5 backdrop-blur-sm rounded-2xl border border-purple-500/20">
+                <span className="block text-xs uppercase tracking-widest text-purple-300/80 mb-1 flex items-center gap-1.5">
+                  <MapPin className="w-3.5 h-3.5" /> Location
+                </span>
+                <p className="text-lg font-semibold text-white">{project.location}</p>
+              </div>
+            )}
+            {project.project_type && (
+              <div ref={projectTypeRef} className="p-5 bg-white/5 backdrop-blur-sm rounded-2xl border border-purple-500/20">
+                <span className="block text-xs uppercase tracking-widest text-purple-300/80 mb-1 flex items-center gap-1.5">
+                  <Sparkles className="w-3.5 h-3.5" /> Type
+                </span>
+                <p className="text-lg font-semibold text-white">{project.project_type}</p>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Description */}
+        {project.description && (
+          <section className="mb-16">
+            <h3 className="text-sm uppercase tracking-widest text-purple-300/80 mb-3 font-heading font-bold">
+              Description
+            </h3>
+            <p ref={descriptionRef} className="text-xl md:text-2xl leading-relaxed text-gray-200 max-w-4xl">
+              {project.description}
+            </p>
+          </section>
+        )}
+
         {/* Video Section (if project has video) */}
         {project.video && (
           <section ref={videoRef} className="mb-16">
-            <h2 className="text-4xl font-bold mb-8 bg-gradient-to-r from-white to-purple-200 bg-clip-text text-transparent">
+            <h2 className="text-3xl md:text-4xl font-bold mb-6 bg-gradient-to-r from-white to-purple-200 bg-clip-text text-transparent">
               Project Video
             </h2>
             <div className="rounded-2xl overflow-hidden shadow-2xl border border-purple-500/20">
@@ -437,126 +499,102 @@ const getVimeoEmbedUrl = (url) => {
             )}
 
               <div className="p-4 bg-gradient-to-r from-purple-900/50 to-pink-900/50 backdrop-blur-sm">
-                <p className="text-center text-gray-300">Watch the project demonstration video</p>
+                <p className="text-center text-gray-300 text-sm">Watch the project demonstration video</p>
               </div>
             </div>
           </section>
         )}
 
-        {/* Description */}
-        <p ref={descriptionRef} className="text-2xl mb-4 leading-relaxed text-gray-200 max-w-4xl">
-         <span className=" bg-gradient-to-r from-pink-300 to-purple-300 bg-clip-text text-transparent font-heading font-bold"> Description: <br/> </span> {project.description}
-        </p>
-                {/* Partner Company Name */}
-        {project.partner_company && (
-          <p ref={partnerCompanyRef} className="text-2xl md:text-3xl font-semibold mb-4 text-white">
-            <span className="bg-gradient-to-r from-pink-300 to-purple-300 bg-clip-text text-transparent font-heading">In collaboration with</span> {project.partner_company}
-          </p>
-        )}
-        {/* Project Location */}
-        {project.location && (
-          <p ref={locationRef} className="text-xl md:text-2xl mb-2 text-gray-200 flex items-center gap-2">
-            <MapPin className="text-purple-400"/> Location: {project.location}
-          </p>
-        )}
-        {/* Project Type */}
-        {project.project_type && (
-          <p ref={projectTypeRef} className="text-xl md:text-2xl mb-8 text-gray-200 flex items-center gap-2">
-            <Sparkles  className="text-purple-400"/> Type: {project.project_type}
-          </p>
-        )}
-        
         {/* Features */}
-        <section className="mb-16">
-          <h2 className="text-4xl font-bold mb-8 bg-gradient-to-r from-white to-purple-200 bg-clip-text text-transparent">
-            Key Features
-          </h2>
-          <ul ref={featuresRef} className="grid md:grid-cols-2 gap-4">
-            {project.features.map((f, i) => (
-              <li
-                key={i}
-                className="p-4 bg-white/5 backdrop-blur-sm rounded-xl border border-purple-500/20 hover:bg-white/10 hover:border-purple-500/40 transition-all duration-300 group"
-              >
-                <span className="flex items-center gap-3">
-                  <span className="w-2 h-2 bg-purple-500 rounded-full group-hover:scale-150 transition-transform duration-300"></span>
-                  {f}
-                </span>
-              </li>
-            ))}
-          </ul>
-        </section>
+        {project.features?.length > 0 && (
+          <section className="mb-16">
+            <h2 className="text-3xl md:text-4xl font-bold mb-8 bg-gradient-to-r from-white to-purple-200 bg-clip-text text-transparent">
+              Key Features
+            </h2>
+            <ul ref={featuresRef} className="grid md:grid-cols-2 gap-4">
+              {project.features.map((f, i) => (
+                <li
+                  key={i}
+                  className="p-4 bg-white/5 backdrop-blur-sm rounded-xl border border-purple-500/20 hover:bg-white/10 hover:border-purple-500/40 transition-all duration-300 group"
+                >
+                  <span className="flex items-center gap-3">
+                    <span className="w-2 h-2 bg-purple-500 rounded-full group-hover:scale-150 transition-transform duration-300 shrink-0"></span>
+                    <span className="text-gray-200">{f}</span>
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
+
         {/* Technologies */}
-        <section className="mb-16">
-          <h2 className="text-4xl font-bold mb-8 bg-gradient-to-r from-white to-purple-200 bg-clip-text text-transparent">
-            Technologies
-          </h2>
-          <div ref={techRef} className="flex flex-wrap gap-4">
-            {project.technologies.map((tech, i) => (
-              <span
-                key={i}
-                className="px-6 py-3 bg-white text-black rounded-full font-medium hover:scale-105 hover:shadow-lg hover:shadow-purple-500/25 transition-all duration-300 cursor-default"
-              >
-                {tech}
-              </span>
-            ))}
-          </div>
-        </section>
+        {project.technologies?.length > 0 && (
+          <section className="mb-16">
+            <h2 className="text-3xl md:text-4xl font-bold mb-8 bg-gradient-to-r from-white to-purple-200 bg-clip-text text-transparent">
+              Technologies
+            </h2>
+            <div ref={techRef} className="flex flex-wrap gap-3">
+              {project.technologies.map((tech, i) => (
+                <span
+                  key={i}
+                  className="px-6 py-3 bg-white text-black rounded-full font-medium hover:scale-105 hover:shadow-lg hover:shadow-purple-500/25 transition-all duration-300 cursor-default"
+                >
+                  {tech}
+                </span>
+              ))}
+            </div>
+          </section>
+        )}
+
         {/* Live Demo & behance Links */}
-        <div ref={buttonsRef} className="flex flex-wrap gap-6 mb-16">
-          {project.behance && (
+        {project.behance && (
+          <div ref={buttonsRef} className="flex flex-wrap gap-6 mb-16">
             <a
               href={project.behance}
               target="_blank"
               rel="noopener noreferrer"
               className="group relative px-8 py-4 bg-gradient-to-r from-purple-600 to-pink-600 font-bold rounded-xl hover:scale-105 transition-all duration-300 overflow-hidden"
             >
-              <span className="relative z-10  font-heading font-bold flex items-center gap-2">
-                View in Behance 🌄
+              <span className="relative z-10 font-heading font-bold flex items-center gap-2">
+                View on Behance <ExternalLink className="w-4 h-4" />
               </span>
               <div className="absolute inset-0 bg-gradient-to-r from-pink-600 to-purple-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
             </a>
+          </div>
+        )}
+
+        {/* Project Navigation */}
+        <div className="flex flex-wrap md:flex-nowrap justify-between items-center gap-4 pt-8 border-t border-purple-500/20">
+          {projects.length > 0 && (
+            <button
+              onClick={() => {
+                const prevIndex = (currentIndex - 1 + projects.length) % projects.length;
+                const prevProject = projects[prevIndex];
+                if (prevProject) navigate(`/project/${prevProject.id}`);
+              }}
+              className="px-5 py-3 bg-white/5 backdrop-blur-sm rounded-xl border border-purple-500/30 hover:bg-purple-900/50 hover:border-purple-500/50 transition-all duration-300 flex items-center gap-2"
+            >
+              <ChevronLeft className="w-4 h-4" /> Previous
+            </button>
+          )}
+
+          <div className="w-full md:w-auto order-3 md:order-none text-center text-sm text-gray-400">
+            Project {currentIndex + 1} of {projects.length}
+          </div>
+
+          {projects.length > 0 && (
+            <button
+              onClick={() => {
+                const nextIndex = (currentIndex + 1) % projects.length;
+                const nextProject = projects[nextIndex];
+                if (nextProject) navigate(`/project/${nextProject.id}`);
+              }}
+              className="px-5 py-3 bg-white/5 backdrop-blur-sm rounded-xl border border-purple-500/30 hover:bg-purple-900/50 hover:border-purple-500/50 transition-all duration-300 flex items-center gap-2"
+            >
+              Next <ChevronRight className="w-4 h-4" />
+            </button>
           )}
         </div>
-{/* Project Navigation */}
-<div className="flex flex-wrap md:flex-nowrap justify-between items-center gap-4 pt-8 border-t border-purple-500/20">
-
-
-
-    {projects.length > 0 && (
-      <button
-        onClick={() => {
-          const currentIndex = projects.findIndex(p => p.id === project.id);
-          const prevIndex = (currentIndex - 1 + projects.length) % projects.length;
-          const prevProject = projects[prevIndex];
-          if (prevProject) {
-            navigate(`/project/${prevProject.id}`);
-          }
-        }}
-        className="px-6 py-3 bg-white/5 backdrop-blur-sm rounded-lg border border-purple-500/30 hover:bg-purple-900/50 transition-all duration-300"
-      >
-        ← Previous
-      </button>
-    )}
-  <div className="w-full md:w-auto order-3 md:order-none text-center text-sm text-gray-400">
-    Project {projects.findIndex(p => p.id === project.id) + 1} of {projects.length}
-  </div>
-
-    {projects.length > 0 && (
-      <button
-        onClick={() => {
-          const currentIndex = projects.findIndex(p => p.id === project.id);
-          const nextIndex = (currentIndex + 1) % projects.length;
-          const nextProject = projects[nextIndex];
-          if (nextProject) {
-            navigate(`/project/${nextProject.id}`);
-          }
-        }}
-        className="px-6 py-3 bg-white/5 backdrop-blur-sm rounded-lg border border-purple-500/30 hover:bg-purple-900/50 transition-all duration-300"
-      >
-        Next →
-      </button>
-    )}
-</div>
       </div>
     </div>
   );

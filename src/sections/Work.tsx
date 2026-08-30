@@ -5,7 +5,7 @@ import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import SplitText from "../components/SplitText";
 import { supabase } from "../lib/supabase";
-import { Mouse } from "lucide-react";
+import { Mouse, ArrowUpRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import DepthCarousel from "../components/DepthCarousel";
 
@@ -394,9 +394,14 @@ const Work = () => {
 
   if (loading) {
     return (
-      <div className="py-16 flex items-center justify-center bg-white text-black flex-col gap-4">
-        <div className="w-12 h-12 border-4 border-black border-t-transparent rounded-full animate-spin"></div>
-        Loading Projects...
+      <div className="min-h-screen flex items-center justify-center bg-white text-black flex-col gap-5">
+        <div className="relative w-14 h-14">
+          <div className="absolute inset-0 rounded-full border-4 border-black/10"></div>
+          <div className="absolute inset-0 rounded-full border-4 border-t-black border-r-transparent border-b-transparent border-l-transparent animate-spin"></div>
+        </div>
+        <span className="text-gray-600 tracking-wide text-sm uppercase">
+          Loading Projects...
+        </span>
       </div>
     );
   }
@@ -491,29 +496,68 @@ const Work = () => {
               <Link
                 key={id}
                 to={`/project/${id}`}
-                className="relative flex-shrink-0 rounded-2xl overflow-hidden group shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 w-[300px] md:w-[400px] h-[250px] md:h-[300px]"
+                className="project-item group relative flex-shrink-0 overflow-hidden rounded-3xl
+                           cursor-pointer border border-white/10 bg-black/[0.02]
+                           shadow-lg hover:shadow-2xl hover:border-black/25
+                           transition-all duration-500
+                           w-[300px] md:w-[400px] h-[250px] md:h-[300px]"
               >
-                <div className="w-full h-full flex items-center justify-center bg-gray-100 overflow-hidden">
-                  <img
-                    src={main_image}
-                    alt={name}
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                    loading={index < 2 ? "eager" : "lazy"}
-                    onLoad={() => {
-                      if (index === 0) {
-                        setTimeout(calculateScrollWidth, 100);
-                      }
-                    }}
-                  />
+                <img
+                  src={main_image}
+                  alt={name}
+                  loading={index < 2 ? "eager" : "lazy"}
+                  onLoad={() => {
+                    if (index === 0) {
+                      setTimeout(calculateScrollWidth, 100);
+                    }
+                  }}
+                  className="absolute inset-0 w-full h-full object-cover
+                             transition-transform duration-700 ease-out
+                             group-hover:scale-110"
+                />
+
+                {/* subtle base gradient always present for legibility + polish */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
+
+                {/* Arrow badge */}
+                <div
+                  className="absolute top-4 right-4 w-10 h-10 rounded-full
+                             bg-white/10 backdrop-blur-md border border-white/20
+                             flex items-center justify-center
+                             opacity-0 group-hover:opacity-100
+                             translate-y-2 group-hover:translate-y-0
+                             transition-all duration-500"
+                >
+                  <ArrowUpRight className="w-5 h-5 text-white" />
                 </div>
 
                 {/* Desktop: Overlay on hover */}
-                <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/80 opacity-0 group-hover:opacity-100 transition-all duration-500 flex flex-col items-center justify-end text-center p-4 md:p-6">
-                  <h3 className="font-heading font-bold text-white mb-1 md:mb-2 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300 text-2xl md:text-3xl">
+                <div
+                  className="absolute inset-0 flex flex-col items-start justify-end
+                             text-left p-6
+                             bg-gradient-to-t from-black/90 via-black/40 to-transparent
+                             opacity-0 group-hover:opacity-100
+                             transition-opacity duration-500"
+                >
+                  <span
+                    className="w-8 h-[2px] bg-white mb-3 origin-left scale-x-0
+                               group-hover:scale-x-100 transition-transform duration-500 delay-100"
+                  />
+                  <h3
+                    className="font-heading font-bold text-white mb-1
+                               transform translate-y-4 group-hover:translate-y-0
+                               transition-transform duration-500
+                               text-2xl md:text-3xl"
+                  >
                     {name}
                   </h3>
                   {company_name && (
-                    <p className="text-gray-200 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300 delay-100 text-lg md:text-xl">
+                    <p
+                      className="text-gray-300
+                                 transform translate-y-4 group-hover:translate-y-0
+                                 transition-transform duration-500 delay-100
+                                 text-base md:text-lg"
+                    >
                       For {company_name}
                     </p>
                   )}
