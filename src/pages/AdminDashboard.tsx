@@ -752,7 +752,7 @@ const AdminDashboard = () => {
                             placeholder="Add feature, then press Enter"
                             className={`flex-1 ${inputClass}`}
                           />
-                          <button type="button" onClick={addFeature} className="px-4 py-3 bg-gradient-to-r from-purple-600 to-pink-600 rounded-lg font-bold hover:scale-105 active:scale-95 transition-transform duration-300 shadow-lg shrink-0">
+                          <button type="button" onClick={addFeature} className="px-4 py-3 bg-purple-600 rounded-lg font-bold hover:scale-105 active:scale-95 transition-transform duration-300 shadow-lg shrink-0">
                             Add
                           </button>
                         </div>
@@ -781,7 +781,7 @@ const AdminDashboard = () => {
                             placeholder="Add technology, then press Enter"
                             className={`flex-1 ${inputClass}`}
                           />
-                          <button type="button" onClick={addTech} className="px-4 py-3 bg-gradient-to-r from-purple-600 to-pink-600 rounded-lg font-bold hover:scale-105 active:scale-95 transition-transform duration-300 shadow-lg shrink-0">
+                          <button type="button" onClick={addTech} className="px-4 py-3 bg-purple-600 rounded-lg font-bold hover:scale-105 active:scale-95 transition-transform duration-300 shadow-lg shrink-0">
                             Add
                           </button>
                         </div>
@@ -834,7 +834,7 @@ const AdminDashboard = () => {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="px-8 py-3 bg-gradient-to-r from-purple-600 to-pink-600 rounded-xl font-bold hover:scale-105 active:scale-95 transition-transform duration-300 shadow-lg flex items-center justify-center disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:scale-100"
+                className="px-8 py-3 bg-purple-600 rounded-xl font-bold hover:scale-105 active:scale-95 transition-transform duration-300 shadow-lg flex items-center justify-center disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:scale-100"
               >
                 {isSubmitting && (
                   <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"></div>
@@ -907,7 +907,7 @@ const AdminDashboard = () => {
                 <h4 className="text-lg sm:text-xl font-bold mb-1 text-purple-100 truncate">{project.name}</h4>
                 <p className="text-sm text-purple-300 mb-4 truncate">{project.company_name}</p>
                 <div className="flex gap-2">
-                  <button onClick={() => handleEdit(project)} className="flex-1 px-3 sm:px-4 py-2 bg-gradient-to-r from-purple-600 to-pink-600 rounded-lg text-sm font-semibold hover:scale-105 active:scale-95 transition-transform duration-300 shadow-md">
+                  <button onClick={() => handleEdit(project)} className="flex-1 px-3 sm:px-4 py-2 bg-purple-600 rounded-lg text-sm font-semibold hover:scale-105 active:scale-95 transition-transform duration-300 shadow-md">
                     Edit
                   </button>
                   <button onClick={() => confirmDelete(project.id)} className="flex-1 px-3 sm:px-4 py-2 bg-red-600/90 rounded-lg text-sm font-semibold hover:scale-105 active:scale-95 transition-transform duration-300 shadow-md">
