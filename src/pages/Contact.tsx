@@ -371,7 +371,7 @@ ${message}
             </div>
           </div>
 <label className="block text-xs text-gray-500 mb-2 tracking-wide uppercase">
-                Phone Number (Optional)
+                Phone Number 
               </label>
               <input
                 type="tel"
@@ -380,7 +380,7 @@ ${message}
                 onFocus={() => setFocusedField("phone")}
                 onBlur={() => setFocusedField(null)}
                 className={inputClass("phone")}
-                
+                required
               />
 
           <div>
