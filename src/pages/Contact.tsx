@@ -7,7 +7,6 @@ import {
   FiMapPin,
   FiInstagram,
   FiLinkedin,
-  FiGithub,
   FiFacebook,
 } from "react-icons/fi";
 import Swal from "sweetalert2";
@@ -134,6 +133,7 @@ const Contact = () => {
     const formData = new FormData(formRef.current);
     const name = (formData.get("name") as string)?.trim();
     const email = (formData.get("email") as string)?.trim();
+    const phone = (formData.get("phone") as string)?.trim();
     const subject = (formData.get("subject") as string)?.trim() || "No subject";
     const message = (formData.get("message") as string)?.trim();
 
@@ -170,6 +170,7 @@ const Contact = () => {
 
 👤 *Name:* ${name}
 📧 *Email:* ${email}
+📞 *Phone:* ${formData.get("phone") as string || "Not provided"}
 📝 *Subject:* ${subject}
 
 💬 *Message:*
@@ -369,6 +370,18 @@ ${message}
               />
             </div>
           </div>
+<label className="block text-xs text-gray-500 mb-2 tracking-wide uppercase">
+                Phone Number (Optional)
+              </label>
+              <input
+                type="tel"
+                name="phone"
+                placeholder="Your Phone Number"
+                onFocus={() => setFocusedField("phone")}
+                onBlur={() => setFocusedField(null)}
+                className={inputClass("phone")}
+                
+              />
 
           <div>
             <label className="block text-xs text-gray-500 mb-2 tracking-wide uppercase">
