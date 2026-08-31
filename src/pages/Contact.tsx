@@ -33,6 +33,20 @@ const SUBJECT_OPTIONS = [
   "Other",
 ];
 
+// Shared SweetAlert2 styling to match the site's monochrome theme
+const swalBaseConfig = {
+  background: "#0a0a0a",
+  color: "#ffffff",
+  confirmButtonColor: "#ffffff",
+  customClass: {
+    popup: "swal-portfolio-popup",
+    title: "swal-portfolio-title",
+    htmlContainer: "swal-portfolio-text",
+    confirmButton: "swal-portfolio-btn",
+  },
+  buttonsStyling: false,
+};
+
 const Contact = () => {
   useDocumentTitle("Ali's Portfolio | Contact ");
   const formRef = useRef<HTMLFormElement>(null);
@@ -54,6 +68,61 @@ const Contact = () => {
     });
   }, []);
 
+  // Inject SweetAlert2 monochrome theme overrides once on mount
+  useEffect(() => {
+    const styleId = "swal-portfolio-theme";
+    if (document.getElementById(styleId)) return;
+
+    const styleEl = document.createElement("style");
+    styleEl.id = styleId;
+    styleEl.textContent = `
+      .swal-portfolio-popup {
+        border: 1px solid rgba(255,255,255,0.12) !important;
+        border-radius: 1.5rem !important;
+        box-shadow: 0 20px 60px rgba(0,0,0,0.6) !important;
+      }
+      .swal-portfolio-title {
+        font-weight: 800 !important;
+        letter-spacing: -0.01em;
+      }
+      .swal-portfolio-text {
+        color: rgba(255,255,255,0.7) !important;
+        font-size: 0.95rem !important;
+      }
+      .swal-portfolio-btn {
+        background: #ffffff !important;
+        color: #000000 !important;
+        font-weight: 700 !important;
+        padding: 0.7rem 2rem !important;
+        border-radius: 0.75rem !important;
+        border: 2px solid #ffffff !important;
+        transition: all 0.3s ease !important;
+      }
+      .swal-portfolio-btn:hover {
+        background: #000000 !important;
+        color: #ffffff !important;
+      }
+      .swal2-icon.swal2-warning,
+      .swal2-icon.swal2-error,
+      .swal2-icon.swal2-success {
+        border-color: rgba(255,255,255,0.3) !important;
+      }
+      .swal2-icon.swal2-success [class^='swal2-success-line'] {
+        background-color: #ffffff !important;
+      }
+      .swal2-icon.swal2-success .swal2-success-ring {
+        border-color: rgba(255,255,255,0.3) !important;
+      }
+      .swal2-icon.swal2-error [class^='swal2-x-mark-line'] {
+        background-color: #ffffff !important;
+      }
+      .swal2-icon.swal2-warning {
+        color: #ffffff !important;
+      }
+    `;
+    document.head.appendChild(styleEl);
+  }, []);
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -70,13 +139,12 @@ const Contact = () => {
 
     if (!name || !email || !message) {
       Swal.fire({
-        title: "Missing Fields!",
-        text: "Please fill in all required fields.",
+        ...swalBaseConfig,
+        title: "Missing Fields",
+        html: `<p>Please fill in all required fields before sending your message.</p>`,
         icon: "warning",
-        background: "#ffffff",
-        color: "#92400e",
-        confirmButtonColor: "#f59e0b",
-        iconColor: "#f59e0b",
+        iconColor: "#ffffff",
+        confirmButtonText: "Got it",
       });
       return;
     }
@@ -84,13 +152,12 @@ const Contact = () => {
     if (!BOT_TOKEN || !CHAT_ID) {
       console.error("Telegram BOT_TOKEN or CHAT_ID is missing from env variables");
       Swal.fire({
-        title: "Error!",
-        text: "Server is not configured correctly. Please try again later.",
+        ...swalBaseConfig,
+        title: "Something Went Wrong",
+        html: `<p>The server isn't configured correctly. Please try again later.</p>`,
         icon: "error",
-        background: "#ffffff",
-        color: "#b91c1c",
-        confirmButtonColor: "#ef4444",
-        iconColor: "#ef4444",
+        iconColor: "#ffffff",
+        confirmButtonText: "Okay",
       });
       return;
     }
@@ -136,13 +203,12 @@ ${message}
       }
 
       await Swal.fire({
-        title: "Sent!",
-        text: "Your message has been sent successfully. We will contact you soon!",
+        ...swalBaseConfig,
+        title: "Message Sent",
+        html: `<p>Thanks for reaching out, <strong>${name.split(" ")[0]}</strong>. I'll get back to you soon.</p>`,
         icon: "success",
-        background: "#ffffff",
-        color: "#065f46",
-        confirmButtonColor: "#10b981",
-        iconColor: "#10b981",
+        iconColor: "#ffffff",
+        confirmButtonText: "Great",
       });
 
       formRef.current.reset();
@@ -150,13 +216,12 @@ ${message}
       console.error("Telegram ERROR:", error);
 
       Swal.fire({
-        title: "Error!",
-        text: error?.message || "Failed to send the message.",
+        ...swalBaseConfig,
+        title: "Message Failed",
+        html: `<p>${error?.message || "We couldn't send your message. Please try again."}</p>`,
         icon: "error",
-        background: "#ffffff",
-        color: "#b91c1c",
-        confirmButtonColor: "#ef4444",
-        iconColor: "#ef4444",
+        iconColor: "#ffffff",
+        confirmButtonText: "Try Again",
       });
     } finally {
       setIsSubmitting(false);
@@ -236,7 +301,7 @@ ${message}
               href="https://www.facebook.com/profile.php?id=100003329446201&mibextid=ZbWKwL"
               target="_blank"
               rel="noopener noreferrer"
-              className="w-10 h-10 flex items-center justify-center rounded-full bg-white/5 hover:bg-blue-500 hover:scale-110 transition-all duration-300"
+              className="w-10 h-10 flex items-center justify-center rounded-full bg-white/5 hover:bg-white hover:text-black hover:scale-110 transition-all duration-300"
             >
               <FiFacebook className="w-5 h-5" />
             </a>
@@ -244,7 +309,7 @@ ${message}
               href="https://www.instagram.com/alihasan5335"
               target="_blank"
               rel="noopener noreferrer"
-              className="w-10 h-10 flex items-center justify-center rounded-full bg-white/5 hover:bg-purple-500 hover:scale-110 transition-all duration-300"
+              className="w-10 h-10 flex items-center justify-center rounded-full bg-white/5 hover:bg-white hover:text-black hover:scale-110 transition-all duration-300"
             >
               <FiInstagram className="w-5 h-5" />
             </a>
@@ -252,7 +317,7 @@ ${message}
               href="https://www.linkedin.com/in/ali-hassan-607932198/"
               target="_blank"
               rel="noopener noreferrer"
-              className="w-10 h-10 flex items-center justify-center rounded-full bg-white/5 hover:bg-blue-400 hover:scale-110 transition-all duration-300"
+              className="w-10 h-10 flex items-center justify-center rounded-full bg-white/5 hover:bg-white hover:text-black hover:scale-110 transition-all duration-300"
             >
               <FiLinkedin className="w-5 h-5" />
             </a>
@@ -260,7 +325,7 @@ ${message}
               href="https://wa.me/+201026635585"
               target="_blank"
               rel="noopener noreferrer"
-              className="w-10 h-10 flex items-center justify-center rounded-full bg-white/5 hover:bg-green-500 hover:scale-110 transition-all duration-300"
+              className="w-10 h-10 flex items-center justify-center rounded-full bg-white/5 hover:bg-white hover:text-black hover:scale-110 transition-all duration-300"
             >
               <FaWhatsapp className="w-5 h-5" />
             </a>
