@@ -521,13 +521,13 @@ const DepthCarousel = ({
                 ref={(el) => {
                   infoRefs.current[i] = el;
                 }}
-                className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent p-3 sm:p-4"
+                className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent p-4 sm:p-4"
               >
                 {item.title && (
-                  <h3 className="truncate text-2xl font-bold text-white sm:text-xl">{item.title}</h3>
+                  <h3 className="truncate text-4xl font-bold text-white ">{item.title}</h3>
                 )}
                 {item.subtitle && (
-                  <p className="truncate text-xl text-gray-300 sm:text-lg">{item.subtitle}</p>
+                  <p className="truncate text-3xl text-gray-300 ">{item.subtitle}</p>
                 )}
               </div>
             )}
