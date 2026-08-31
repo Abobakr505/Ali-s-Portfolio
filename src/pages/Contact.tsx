@@ -341,7 +341,7 @@ ${message}
         >
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
             <div>
-              <label className="block text-xs text-gray-500 mb-2 tracking-wide uppercase">
+              <label className=" block text-xs text-gray-500 mb-2 tracking-wide uppercase">
                 Name
               </label>
               <input
@@ -350,7 +350,7 @@ ${message}
                 placeholder="Your Name"
                 onFocus={() => setFocusedField("name")}
                 onBlur={() => setFocusedField(null)}
-                className={inputClass("name")}
+                className={`lang-fonts ${inputClass("name")}`}
                 required
               />
             </div>
@@ -370,7 +370,7 @@ ${message}
               />
             </div>
           </div>
-<label className="block text-xs text-gray-500 mb-2 tracking-wide uppercase">
+<label className=" block text-xs text-gray-500 mb-2 tracking-wide uppercase">
                 Phone Number 
               </label>
               <input
@@ -379,7 +379,7 @@ ${message}
                 placeholder="Your Phone Number"
                 onFocus={() => setFocusedField("phone")}
                 onBlur={() => setFocusedField(null)}
-                className={inputClass("phone")}
+                className={`lang-fonts ${inputClass("phone")}`}
                 required
               />
 
@@ -426,7 +426,7 @@ ${message}
               rows={5}
               onFocus={() => setFocusedField("message")}
               onBlur={() => setFocusedField(null)}
-              className={`${inputClass("message")} resize-none`}
+              className={`lang-fonts ${inputClass("message")} resize-none`}
               required
             ></textarea>
           </div>

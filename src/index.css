@@ -1,4 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Urbanist:ital,wght@0,100..900;1,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@100;200;300;400;500;600;700&display=swap');
+
 @import "tailwindcss";
 @import "@fontsource/inter/400.css";   /* regular */
 @import "@fontsource/inter/500.css";   /* medium */
@@ -313,4 +315,9 @@ html{
     );
     height: 50vh;
   }
+}
+
+.lang-fonts{
+    font-family: 'Urbanist', 'IBM Plex Sans Arabic' ,  sans-serif;
+
 }
