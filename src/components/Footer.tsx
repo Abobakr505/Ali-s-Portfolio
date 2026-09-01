@@ -67,7 +67,7 @@ const Footer = () => {
       {/* Footer Bottom */}
 <div className='main-container grid md:grid-cols-2 gap-3 py-6 lg:py-8 max-md:text-center'>
   <div className='text-base lg:text-lg'>
-    © 2025 Ali Hasan | All rights reserved
+    © {new Date().getFullYear()} Ali Hasan | All rights reserved
   </div>
 
   <div className='flex gap-3 justify-center md:justify-end'>
