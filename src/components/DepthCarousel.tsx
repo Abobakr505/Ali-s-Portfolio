@@ -8,6 +8,7 @@ import {
   KeyboardEvent as ReactKeyboardEvent
 } from 'react';
 import gsap from 'gsap';
+import { ArrowUpRight } from 'lucide-react';
 
 export type DepthCarouselItem =
   | string
@@ -482,58 +483,75 @@ const DepthCarousel = ({
       onPointerCancel={onPointerEnd}
       onKeyDown={onKeyDown}
     >
- <div className="absolute inset-0 [transform-style:preserve-3d]" ref={stageRef}>
-        {data.map((item, i) => (
-          <a
-            key={i}
-            href={item.to || undefined}
-            className="absolute left-1/2 top-1/2 block cursor-pointer overflow-hidden bg-[#0b0d12] shadow-[0_30px_60px_-20px_rgba(0,0,0,0.65),0_8px_20px_-10px_rgba(0,0,0,0.5)] [transform:translate(-50%,-50%)] [transform-origin:center] [will-change:transform,opacity,filter]"
-            ref={(el) => {
-              cardRefs.current[i] = el;
-            }}
-            style={{ width: cardWidth, height: cardHeight, borderRadius: radius }}
-            aria-roledescription="slide"
-            aria-label={`${i + 1} of ${count}${item.title ? `: ${item.title}` : ''}`}
-            aria-hidden={active !== i}
-            onClick={(e) => {
-              if (item.to && !(e.metaKey || e.ctrlKey || e.shiftKey)) {
-                e.preventDefault();
-              }
-              onCardClick(i);
-            }}
-          >
-            <img
-              className="block h-full w-full select-none object-cover [pointer-events:none] [-webkit-user-drag:none]"
-              src={item.image}
-              alt={item.alt || item.title || ''}
-              draggable={false}
-            />
-            <span
-              className="pointer-events-none absolute inset-0 opacity-0 mix-blend-multiply"
-              ref={(el) => {
-                overlayRefs.current[i] = el;
-              }}
-              style={{ background: tint }}
-            />
+<div className="absolute inset-0 [transform-style:preserve-3d]" ref={stageRef}>
+  {data.map((item, i) => (
+      <a
+      key={i}
+      href={item.to || undefined}
+      className="absolute left-1/2 top-1/2 block cursor-pointer overflow-hidden bg-[#0b0d12] shadow-[0_30px_60px_-20px_rgba(0,0,0,0.65),0_8px_20px_-10px_rgba(0,0,0,0.5)] [transform:translate(-50%,-50%)] [transform-origin:center] [will-change:transform,opacity,filter]"
+      ref={(el) => {
+        cardRefs.current[i] = el;
+      }}
+      style={{ width: cardWidth, height: cardHeight, borderRadius: radius }}
+      aria-roledescription="slide"
+      aria-label={`${i + 1} of ${count}${item.title ? `: ${item.title}` : ''}`}
+      aria-hidden={active !== i}
+      onClick={(e) => {
+        if (item.to && !(e.metaKey || e.ctrlKey || e.shiftKey)) {
+          e.preventDefault();
+        }
+        onCardClick(i);
+      }}
+    >
+      {/* Gradient overlay ثابت عشان النص يبان كويس فوق الصورة */}
+<div className="absolute inset-0 bg-linear-to-t from-black/75 via-black/25 to-transparent" />
 
-            {(item.title || item.subtitle) && (
-              <div
-                ref={(el) => {
-                  infoRefs.current[i] = el;
-                }}
-                className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent p-4 sm:p-4"
-              >
-                {item.title && (
-                  <h3 className="truncate text-4xl font-bold text-white ">{item.title}</h3>
-                )}
-                {item.subtitle && (
-                  <p className="truncate text-3xl text-gray-300 ">{item.subtitle}</p>
-                )}
-              </div>
-            )}
-          </a>
-        ))}
+      <img
+        className="block h-full w-full select-none object-cover  [pointer-events:none] [-webkit-user-drag:none]"
+        src={item.image}
+        alt={item.alt || item.title || ''}
+        draggable={false}
+      />
+      <span
+        className="pointer-events-none absolute inset-0 opacity-0 mix-blend-multiply"
+        ref={(el) => {
+          overlayRefs.current[i] = el;
+        }}
+        style={{ background: tint }}
+      />
+
+      {(item.title || item.subtitle) && (
+        <div
+          ref={(el) => {
+            infoRefs.current[i] = el;
+          }}
+          className="pointer-events-none absolute inset-x-0 bottom-0 p-6"
+        >
+          <span className="block w-8 h-[2px] bg-white/80 mb-2 rounded-full" />
+          {item.title && (
+            <h3 className="truncate text-4xl font-bold text-white drop-shadow-sm">
+              {item.title}
+            </h3>
+          )}
+          {item.subtitle && (
+            <p className="truncate text-3xl text-gray-300 mt-1.5">
+              {item.subtitle}
+            </p>
+          )}
+        </div>
+      )}
+
+      {/* Badge السهم يظهر ثابت بشكل خفيف بدل ما يعتمد على hover */}
+      <div
+        className="pointer-events-none absolute top-4 right-4 w-15 h-15 rounded-full
+                   bg-white/10 backdrop-blur-md border border-white/20
+                   flex items-center justify-center"
+      >
+        <ArrowUpRight className="w-8 h-8 text-white" />
       </div>
+    </a>
+  ))}
+</div>
 
 
       {showControls && count > 1 && (

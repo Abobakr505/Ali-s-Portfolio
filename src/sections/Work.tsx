@@ -455,8 +455,8 @@ const Work = () => {
     blur={6}
     autoplay={false}
     loop
-    cardWidth={580}
-    cardHeight={500}
+    cardWidth={680}
+    cardHeight={580}
     radius={20}
     tint="#05060a"
     duration={700}

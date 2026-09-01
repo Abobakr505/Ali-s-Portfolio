@@ -158,18 +158,34 @@ const Projects = () => {
                     <ArrowUpRight className="w-5 h-5 text-white" />
                   </div>
 
-                  {isMobile ? (
-                    <div className="absolute bottom-0 left-0 right-0 p-4">
-                      <h3 className="font-heading font-bold text-white truncate text-xl">
-                        {name}
-                      </h3>
-                      {company_name && (
-                        <p className="text-gray-300 truncate text-sm mt-1">
-                          For {company_name}
-                        </p>
-                      )}
-                    </div>
-                  ) : (
+{isMobile ? (
+  <>
+    {/* Gradient overlay ثابت عشان النص يبان كويس فوق الصورة */}
+    <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent" />
+
+    <div className="absolute bottom-0 left-0 right-0 p-5">
+      <span className="block w-8 h-[2px] bg-white/80 mb-2 rounded-full" />
+      <h3 className="font-heading font-bold text-white text-xl leading-snug drop-shadow-sm">
+        {name}
+      </h3>
+      {company_name && (
+        <p className="text-gray-300 text-sm mt-1.5 flex items-center gap-1">
+          For {company_name}
+        </p>
+      )}
+    </div>
+
+    {/* Badge السهم يظهر ثابت بشكل خفيف على الموبايل بدل ما يعتمد على hover */}
+    <div
+      className="absolute top-4 right-4 w-9 h-9 rounded-full
+                 bg-white/10 backdrop-blur-md border border-white/20
+                 flex items-center justify-center active:scale-90
+                 transition-transform duration-300"
+    >
+      <ArrowUpRight className="w-4 h-4 text-white" />
+    </div>
+  </>
+) : (
                     <div
                       className="absolute inset-0 flex flex-col items-start justify-end
                                  text-left p-6
