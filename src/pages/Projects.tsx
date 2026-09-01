@@ -110,7 +110,7 @@ const Projects = () => {
             </h2>
             <div className="mx-auto w-24 h-[3px] bg-gradient-to-r from-transparent via-white to-transparent rounded-full mt-5" />
             <p className="text-gray-400 mt-5 max-w-xl mx-auto text-lg">
-              A selection of things I've designed, built, and shipped.
+              A selection of things I've designed, built, and created.
             </p>
           </div>
 
