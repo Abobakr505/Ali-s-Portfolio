@@ -27,7 +27,7 @@ const Companies = () => {
   return (
     <section className="w-full bg-white text-black pt-16 pb-8 flex flex-col items-center">
       <h2 className="text-4xl lg:text-[4vw] px-4 text-center font-heading font-bold tracking-tight">
-        Companies I Worked With
+        Companies I Worked For
       </h2>
 
       <div className="w-32 h-1 bg-black rounded-full my-6 shadow-lg"></div>
